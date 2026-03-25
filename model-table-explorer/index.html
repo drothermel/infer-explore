@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Model Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+[data-theme="dark"] {
+  --color-bg: #0f0f12;
+  --color-surface: #18181e;
+  --color-surface-2: #1f1f27;
+  --color-surface-3: #26262f;
+  --color-border: #2a2a35;
+  --color-text: #e0dfd8;
+  --color-text-muted: #8a8a90;
+  --color-text-dim: #55555a;
+  --color-primary: #6bc5d2;
+  --color-accent: #e8a44a;
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-row-hover: rgba(107,197,210,0.06);
+  --color-row-expanded: rgba(107,197,210,0.03);
+  --heatmap-low: #1a2332;
+  --heatmap-mid: #1a3a2a;
+  --heatmap-high: #1a4a2a;
+  --price-low: #1a3a2a;
+  --price-high: #3a1a1a;
+}
+[data-theme="light"] {
+  --color-bg: #f5f4f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0efeb;
+  --color-surface-3: #e8e7e3;
+  --color-border: #d8d6cf;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6a6a6a;
+  --color-text-dim: #aaaaaa;
+  --color-primary: #01696f;
+  --color-accent: #c07b20;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-row-hover: rgba(1,105,111,0.06);
+  --color-row-expanded: rgba(1,105,111,0.03);
+  --heatmap-low: #f0f4f8;
+  --heatmap-mid: #d0f0d0;
+  --heatmap-high: #80e080;
+  --price-low: #d0f0d0;
+  --price-high: #f0d0d0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.container { max-width: 1800px; margin: 0 auto; padding: 16px 20px; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.header-right { display: flex; align-items: center; gap: 12px; }
+.stats-bar {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+.theme-toggle {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.theme-toggle:hover { border-color: var(--color-primary); }
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: 350px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.search-box:focus { outline: none; border-color: var(--color-primary); }
+.search-box::placeholder { color: var(--color-text-dim); }
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.filter-group label { color: var(--color-text-muted); white-space: nowrap; }
+.filter-select {
+  padding: 5px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.filter-checkbox input { cursor: pointer; }
+
+.price-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.price-slider-group label { color: var(--color-text-muted); white-space: nowrap; }
+.price-slider {
+  width: 100px;
+  accent-color: var(--color-primary);
+}
+.price-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  min-width: 48px;
+}
+
+/* Creator badges */
+.creator-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.creator-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  transition: all 0.15s;
+  user-select: none;
+}
+.creator-badge.active {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+.creator-badge:hover { border-color: var(--color-primary); }
+
+/* Column group toggles */
+.col-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.col-group-btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.col-group-btn.active {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+  border-color: var(--color-primary);
+}
+.col-group-btn:hover { border-color: var(--color-primary); }
+
+/* Source filter badges */
+.source-badges {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.source-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  transition: all 0.15s;
+  user-select: none;
+}
+.source-badge.active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface-2);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+thead th:hover { color: var(--color-primary); }
+thead th .sort-arrow {
+  font-size: 10px;
+  margin-left: 3px;
+  opacity: 0.4;
+}
+thead th.sorted .sort-arrow { opacity: 1; color: var(--color-primary); }
+
+tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+tbody tr:hover { background: var(--color-row-hover); }
+tbody tr.expanded { background: var(--color-row-expanded); }
+td {
+  padding: 6px 10px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+td.name-cell {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--color-text);
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td.creator-cell {
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+td.null-val {
+  color: var(--color-text-dim);
+  font-style: italic;
+}
+td.bool-true { color: var(--color-success); text-align: center; }
+td.bool-false { color: var(--color-text-dim); text-align: center; }
+
+/* Expanded row detail */
+.detail-row td {
+  padding: 0;
+  border-bottom: 2px solid var(--color-primary);
+}
+.detail-content {
+  padding: 16px 20px;
+  background: var(--color-surface-2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.detail-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-size: 12px;
+}
+.detail-grid .label { color: var(--color-text-muted); }
+.detail-grid .value { font-family: var(--font-mono); font-size: 11px; }
+
+.pricing-table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+.pricing-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  padding: 3px 8px 3px 0;
+  border-bottom: 1px solid var(--color-border);
+  position: static;
+  background: transparent;
+  cursor: default;
+  font-size: 11px;
+}
+.pricing-table td {
+  padding: 3px 8px 3px 0;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+.pricing-table tr.cheapest-row { border-left: 3px solid var(--color-success); }
+.pricing-table tr.free-row { opacity: 0.85; }
+.pricing-table tr.free-row td { font-style: italic; }
+
+.tier-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.badge-free {
+  background: var(--color-success);
+  color: #111;
+}
+.badge-batch {
+  background: var(--color-primary);
+  color: #111;
+}
+.badge-priority {
+  background: var(--color-accent);
+  color: #111;
+}
+.badge-flex {
+  background: #a78bfa;
+  color: #111;
+}
+.badge-cheapest {
+  color: var(--color-success);
+  font-weight: 600;
+}
+.rate-limit-info {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+.free-warning {
+  font-size: 10px;
+  color: var(--color-accent);
+  font-style: italic;
+}
+.pricing-legend {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Configurations comparison table */
+.config-table-wrap {
+  overflow-x: auto;
+  margin-top: 4px;
+}
+.config-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.config-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface-3);
+  padding: 5px 8px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+  cursor: default;
+}
+.config-table thead th.bench-col {
+  text-align: right;
+  min-width: 54px;
+}
+.config-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+.config-table tbody tr:last-child {
+  border-bottom: none;
+}
+.config-table tbody td {
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.config-table tbody td.config-name-cell {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
+  color: var(--color-text);
+  white-space: normal;
+  min-width: 120px;
+  max-width: 200px;
+}
+.config-table tbody td.bench-val {
+  text-align: right;
+}
+.config-table tbody td.bench-best {
+  text-align: right;
+  color: var(--color-success);
+  font-weight: 600;
+}
+.config-table tbody td.bench-null {
+  text-align: right;
+  color: var(--color-text-dim);
+  font-style: italic;
+}
+.config-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 3px;
+}
+.tag-reasoning { background: #a78bfa; color: #111; }
+.tag-non-reasoning { background: var(--color-text-dim); color: #111; }
+.tag-adaptive { background: var(--color-accent); color: #111; }
+.tag-effort { background: var(--color-primary); color: #111; }
+
+/* Aliases list */
+.alias-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.alias-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* Config count badge in table */
+.config-count {
+  display: inline-block;
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+}
+.loading .spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-msg {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-danger);
+}
+
+/* Footer */
+.footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  font-size: 11px;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>LLM Model Explorer</h1>
+    <div class="header-right">
+      <div class="stats-bar" id="stats-bar"></div>
+      <button class="theme-toggle" id="theme-toggle">Light</button>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <input type="text" class="search-box" id="search" placeholder="Search models, creators, or aliases...">
+    <div class="filter-group">
+      <label>Reasoning:</label>
+      <select class="filter-select" id="reasoning-filter">
+        <option value="">All</option>
+        <option value="any">Any reasoning</option>
+        <option value="basic">Basic</option>
+        <option value="advanced">Advanced</option>
+        <option value="frontier">Frontier</option>
+      </select>
+    </div>
+    <label class="filter-checkbox"><input type="checkbox" id="open-only"> Open-weight only</label>
+    <label class="filter-checkbox"><input type="checkbox" id="has-free-tier"> Has free tier</label>
+    <label class="filter-checkbox"><input type="checkbox" id="has-configs"> Has configurations</label>
+    <div class="price-slider-group">
+      <label>Max input $/1M:</label>
+      <input type="range" class="price-slider" id="price-slider" min="0" max="100" value="100" step="1">
+      <span class="price-val" id="price-val">any</span>
+    </div>
+  </div>
+
+  <div class="source-badges" id="source-badges"></div>
+  <div class="creator-badges" id="creator-badges"></div>
+  <div class="col-groups" id="col-groups"></div>
+
+  <div class="table-wrapper" id="table-wrapper">
+    <div class="loading"><div class="spinner"></div><br>Loading model data...</div>
+  </div>
+
+  <div class="footer">
+    Data merged from Artificial Analysis, HuggingFace OpenEvals, Vantage, and Bifrost.
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────
+let allModels = [];
+let sortCol = 'name';
+let sortDir = 'asc';
+let expandedId = null;
+let activeCreators = new Set();
+let activeSources = new Set(['aa','hf','vantage','bifrost']);
+
+const CREATOR_COLORS = {
+  openai:'#74d680', anthropic:'#d4a06a', google:'#ea4c89', meta:'#a78bfa',
+  mistral:'#f7a74a', deepseek:'#34d399', alibaba:'#5dadec', xai:'#f472b6',
+  cohere:'#818cf8', amazon:'#fb923c', nvidia:'#a3e635', microsoft:'#60a5fa',
+  ibm:'#c084fc', samsung:'#38bdf8', together:'#4ade80', fireworks:'#f97316',
+  groq:'#22d3ee', perplexity:'#e879f9', databricks:'#facc15', writer:'#a78bfa'
+};
+
+// ── Column groups ──────────────────────────────────────────────
+const COL_GROUPS = {
+  Identity: [
+    {key:'name', label:'Model', fmt:'name'},
+    {key:'creator', label:'Creator', fmt:'creator'},
+    {key:'num_configurations', label:'Cfgs', fmt:'configs'},
+    {key:'release_date', label:'Released', fmt:'text'},
+    {key:'model_type', label:'Type', fmt:'text'},
+  ],
+  Metadata: [
+    {key:'parameters_billions', label:'Params (B)', fmt:'num1'},
+    {key:'reasoning_tier', label:'Reasoning', fmt:'text'},
+    {key:'selfhostable', label:'Selfhost', fmt:'bool'},
+    {key:'context_window', label:'Context', fmt:'tokens'},
+  ],
+  Pricing: [
+    {key:'input_price_per_1m', label:'Input $/1M', fmt:'price'},
+    {key:'output_price_per_1m', label:'Output $/1M', fmt:'price'},
+    {key:'min_input_price_per_1m', label:'Min In', fmt:'price'},
+    {key:'max_input_price_per_1m', label:'Max In', fmt:'price'},
+    {key:'blended_price_per_1m', label:'Blended $/1M', fmt:'price'},
+    {key:'num_providers', label:'Providers', fmt:'int'},
+    {key:'num_free_providers', label:'# Free', fmt:'int'},
+    {key:'has_batch_pricing', label:'Batch', fmt:'bool'},
+  ],
+  Performance: [
+    {key:'output_tokens_per_sec', label:'Tok/s', fmt:'num1'},
+    {key:'time_to_first_token_s', label:'TTFT (s)', fmt:'num2'},
+    {key:'time_to_first_answer_s', label:'TTFA (s)', fmt:'num2'},
+  ],
+  Capabilities: [
+    {key:'supports_vision', label:'Vision', fmt:'bool'},
+    {key:'supports_reasoning', label:'Reasoning', fmt:'bool'},
+    {key:'supports_function_calling', label:'Fn Call', fmt:'bool'},
+    {key:'supports_web_search', label:'Web', fmt:'bool'},
+    {key:'supports_prompt_caching', label:'Cache', fmt:'bool'},
+    {key:'supports_pdf_input', label:'PDF', fmt:'bool'},
+  ],
+  Benchmarks: [
+    {key:'benchmarks.aa_intelligence_index', label:'AA Intel', fmt:'bench'},
+    {key:'benchmarks.aa_coding_index', label:'AA Code', fmt:'bench'},
+    {key:'benchmarks.gpqa', label:'GPQA', fmt:'pct'},
+    {key:'benchmarks.hle', label:'HLE', fmt:'pct'},
+    {key:'benchmarks.livecodebench', label:'LCB', fmt:'pct'},
+    {key:'benchmarks.mmlu_pro', label:'MMLU-Pro', fmt:'pct'},
+    {key:'benchmarks.aime_2025', label:'AIME 25', fmt:'pct'},
+    {key:'benchmarks.math_500', label:'MATH', fmt:'pct'},
+    {key:'benchmarks.swe_bench_verified', label:'SWE', fmt:'pct'},
+    {key:'benchmarks.terminalbench_hard', label:'TBench', fmt:'pct'},
+  ],
+  'Cost Eff.': [
+    {key:'swe_bench_cost_per_resolved', label:'SWE $/fix', fmt:'price'},
+    {key:'skatebench_cost_per_test', label:'Skate $/test', fmt:'price'},
+    {key:'hf_aggregate_score', label:'HF Agg', fmt:'num1'},
+  ],
+};
+
+let activeGroups = new Set(['Identity','Pricing','Performance']);
+
+// ── Helpers ────────────────────────────────────────────────────
+function getVal(obj, path) {
+  const parts = path.split('.');
+  let v = obj;
+  for (const p of parts) { v = v?.[p]; }
+  return v;
+}
+
+function fmtVal(val, fmt) {
+  if (val === null || val === undefined || (typeof val === 'number' && isNaN(val)))
+    return {html:'<span class="null-val">\u2014</span>', cls:'null-val', raw:null};
+  switch(fmt) {
+    case 'name': return {html:esc(val), cls:'name-cell', raw:val};
+    case 'creator': return {html:esc(val), cls:'creator-cell', raw:val};
+    case 'text': return {html:esc(String(val)), cls:'', raw:val};
+    case 'int': return {html:String(val), cls:'', raw:val};
+    case 'num1': return {html:Number(val).toFixed(1), cls:'', raw:val};
+    case 'num2': return {html:Number(val).toFixed(2), cls:'', raw:val};
+    case 'price': return {html:'$'+fmtPrice(val), cls:'', raw:val};
+    case 'pct': return {html:(Number(val)*100).toFixed(1)+'%', cls:'', raw:val};
+    case 'bench': return {html:Number(val).toFixed(1), cls:'', raw:val};
+    case 'tokens': return {html:fmtTokens(val), cls:'', raw:val};
+    case 'configs':
+      if (val <= 1) return {html:'<span class="null-val">1</span>', cls:'', raw:val};
+      return {html:'<span class="config-count" style="background:var(--color-surface-3);color:var(--color-primary);font-weight:600">'+val+'</span>', cls:'', raw:val};
+    case 'bool':
+      if (val === true) return {html:'\u2713', cls:'bool-true', raw:1};
+      return {html:'\u2715', cls:'bool-false', raw:0};
+    default: return {html:esc(String(val)), cls:'', raw:val};
+  }
+}
+
+function fmtPrice(v) {
+  if (v === null || v === undefined) return '\u2014';
+  if (v >= 100) return Number(v).toFixed(0);
+  if (v >= 1) return Number(v).toFixed(2);
+  if (v >= 0.01) return Number(v).toFixed(3);
+  return Number(v).toFixed(4);
+}
+
+function fmtTokens(v) {
+  if (!v) return '\u2014';
+  if (v >= 1e6) return (v/1e6).toFixed(1)+'M';
+  if (v >= 1e3) return (v/1e3).toFixed(0)+'K';
+  return String(v);
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// Heatmap for benchmarks (higher = greener)
+function benchColor(val, min, max) {
+  if (val === null || val === undefined) return '';
+  const t = Math.max(0, Math.min(1, (val - min) / (max - min || 1)));
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  if (isDark) {
+    const r = Math.round(26 + t * 0);
+    const g = Math.round(35 + t * 50);
+    const b = Math.round(50 - t * 18);
+    return `background:rgb(${r},${g},${b})`;
+  } else {
+    const r = Math.round(240 - t * 112);
+    const g = Math.round(244 - t * 20);
+    const b = Math.round(248 - t * 120);
+    return `background:rgb(${r},${g},${b})`;
+  }
+}
+
+// Heatmap for prices (lower = greener)
+function priceColor(val, min, max) {
+  if (val === null || val === undefined) return '';
+  const t = Math.max(0, Math.min(1, (val - min) / (max - min || 1)));
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  if (isDark) {
+    const r = Math.round(26 + t * 32);
+    const g = Math.round(58 - t * 32);
+    const b = Math.round(42 - t * 16);
+    return `background:rgb(${r},${g},${b})`;
+  } else {
+    const r = Math.round(208 + t * 32);
+    const g = Math.round(240 - t * 32);
+    const b = Math.round(208);
+    return `background:rgb(${r},${g},${b})`;
+  }
+}
+
+// ── Compute column stats for heatmaps ──────────────────────────
+let colStats = {};
+function computeStats(models) {
+  colStats = {};
+  for (const [gName, cols] of Object.entries(COL_GROUPS)) {
+    for (const col of cols) {
+      if (!['price','pct','bench','num1'].includes(col.fmt)) continue;
+      const vals = models.map(m => getVal(m, col.key)).filter(v => v !== null && v !== undefined && !isNaN(v));
+      if (vals.length > 0) {
+        colStats[col.key] = {min: Math.min(...vals), max: Math.max(...vals)};
+      }
+    }
+  }
+}
+
+// ── Filtering ──────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const reasoningFilter = document.getElementById('reasoning-filter').value;
+  const openOnly = document.getElementById('open-only').checked;
+  const hasFreeTier = document.getElementById('has-free-tier').checked;
+  const hasConfigs = document.getElementById('has-configs').checked;
+  const maxPrice = parseInt(document.getElementById('price-slider').value);
+  const priceLimit = maxPrice >= 100 ? Infinity : maxPrice;
+
+  return allModels.filter(m => {
+    // Text search — matches name, creator, model_id, family, and aliases
+    if (q) {
+      const nameMatch = m.name.toLowerCase().includes(q);
+      const creatorMatch = m.creator.toLowerCase().includes(q);
+      const idMatch = (m.model_id||'').toLowerCase().includes(q);
+      const familyMatch = (m.family||'').toLowerCase().includes(q);
+      const aliasMatch = (m.aliases||[]).some(a => a.toLowerCase().includes(q));
+      if (!nameMatch && !creatorMatch && !idMatch && !familyMatch && !aliasMatch) return false;
+    }
+    // Creator filter
+    if (activeCreators.size > 0 && !activeCreators.has(m.creator)) return false;
+    // Source filter
+    if (activeSources.size < 4) {
+      if (!m.sources.some(s => activeSources.has(s))) return false;
+    }
+    // Reasoning filter
+    if (reasoningFilter === 'any' && !m.reasoning) return false;
+    if (reasoningFilter && reasoningFilter !== 'any' && m.reasoning_tier !== reasoningFilter) return false;
+    // Open-weight only
+    if (openOnly && m.model_type !== 'open') return false;
+    // Has free tier
+    if (hasFreeTier && !m.has_free_tier) return false;
+    // Has multiple configurations
+    if (hasConfigs && (m.num_configurations || 1) <= 1) return false;
+    // Price filter
+    if (priceLimit < Infinity && (m.input_price_per_1m === null || m.input_price_per_1m > priceLimit)) return false;
+    return true;
+  });
+}
+
+// ── Sort ───────────────────────────────────────────────────────
+function sortModels(models) {
+  return [...models].sort((a, b) => {
+    let va = getVal(a, sortCol);
+    let vb = getVal(b, sortCol);
+    // Nulls always last
+    if (va === null || va === undefined) return 1;
+    if (vb === null || vb === undefined) return -1;
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+// ── Get visible columns ────────────────────────────────────────
+function getVisibleCols() {
+  const cols = [];
+  for (const [gName, gcols] of Object.entries(COL_GROUPS)) {
+    if (activeGroups.has(gName)) cols.push(...gcols);
+  }
+  return cols;
+}
+
+// ── Render ─────────────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const sorted = sortModels(filtered);
+  const cols = getVisibleCols();
+
+  computeStats(filtered);
+
+  // Stats bar
+  document.getElementById('stats-bar').textContent =
+    `${sorted.length} / ${allModels.length} models`;
+
+  const wrapper = document.getElementById('table-wrapper');
+
+  let html = '<table><thead><tr>';
+  for (const col of cols) {
+    const isSorted = sortCol === col.key;
+    const arrow = isSorted ? (sortDir === 'asc' ? '\u25B2' : '\u25BC') : '\u25B4';
+    html += `<th class="${isSorted?'sorted':''}" data-col="${col.key}">`;
+    html += `${esc(col.label)} <span class="sort-arrow">${arrow}</span></th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  for (const m of sorted) {
+    const isExpanded = expandedId === m.id;
+    html += `<tr class="model-row ${isExpanded?'expanded':''}" data-id="${esc(m.id)}">`;
+    for (const col of cols) {
+      const val = getVal(m, col.key);
+      const f = fmtVal(val, col.fmt);
+      let style = '';
+      const stats = colStats[col.key];
+      if (stats && f.raw !== null) {
+        if (col.fmt === 'price') {
+          style = priceColor(f.raw, stats.min, stats.max);
+        } else if (['pct','bench','num1'].includes(col.fmt) && col.key.startsWith('benchmarks.')) {
+          style = benchColor(f.raw, stats.min, stats.max);
+        }
+      }
+      html += `<td class="${f.cls}" ${style?'style="'+style+'"':''}>${f.html}</td>`;
+    }
+    html += '</tr>';
+
+    if (isExpanded) {
+      html += `<tr class="detail-row"><td colspan="${cols.length}">`;
+      html += renderDetail(m);
+      html += '</td></tr>';
+    }
+  }
+
+  html += '</tbody></table>';
+  wrapper.innerHTML = html;
+
+  // Bind events
+  wrapper.querySelectorAll('th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      if (sortCol === col) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortCol = col;
+        sortDir = 'asc';
+      }
+      render();
+    });
+  });
+
+  wrapper.querySelectorAll('.model-row').forEach(tr => {
+    tr.addEventListener('click', () => {
+      const id = tr.dataset.id;
+      expandedId = expandedId === id ? null : id;
+      render();
+    });
+  });
+}
+
+// ── Detail panel ───────────────────────────────────────────────
+function renderDetail(m) {
+  let html = '<div class="detail-content">';
+
+  // Identity section — now includes model_id, family, variant, version
+  html += '<div class="detail-section"><h3>Model Info</h3><div class="detail-grid">';
+  const infoFields = [
+    ['Name', m.name], ['Creator', m.creator], ['Country', m.creator_country],
+    ['Model ID', m.model_id], ['Family', m.family],
+    ['Variant', m.variant || null], ['Version', m.version || null],
+    ['Released', m.release_date], ['Type', m.model_type],
+    ['Parameters', m.parameters_billions ? m.parameters_billions+'B' : null],
+    ['Architecture', m.architecture], ['License', m.license],
+    ['Context Window', fmtTokens(m.context_window)],
+    ['Max Output', fmtTokens(m.max_output_tokens)],
+    ['Reasoning Tier', m.reasoning_tier],
+    ['Selfhostable', m.selfhostable === true ? 'Yes' : m.selfhostable === false ? 'No' : null],
+    ['Sources', m.sources?.join(', ')],
+  ];
+  for (const [label, val] of infoFields) {
+    const display = val || '\u2014';
+    html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
+  }
+  // Aliases
+  if (m.aliases?.length > 0) {
+    html += `<span class="label">Aliases</span><span class="value" style="white-space:normal"><div class="alias-list">`;
+    for (const a of m.aliases) {
+      html += `<span class="alias-tag">${esc(a)}</span>`;
+    }
+    html += '</div></span>';
+  }
+  html += '</div></div>';
+
+  // Configurations comparison table
+  const configs = m.configurations || [];
+  if (configs.length > 1) {
+    // Collect the union of all benchmark keys across configs (preserving order)
+    const benchKeysSet = new Set();
+    const benchKeysOrdered = [];
+    for (const c of configs) {
+      for (const k of Object.keys(c.benchmarks || {})) {
+        if (!benchKeysSet.has(k)) {
+          const v = (c.benchmarks || {})[k];
+          if (v !== null && v !== undefined) {
+            benchKeysSet.add(k);
+            benchKeysOrdered.push(k);
+          }
+        }
+      }
+    }
+    // Also scan for keys that only appear with values in other configs
+    for (const c of configs) {
+      for (const k of Object.keys(c.benchmarks || {})) {
+        if (!benchKeysSet.has(k) && (c.benchmarks || {})[k] !== null && (c.benchmarks || {})[k] !== undefined) {
+          benchKeysSet.add(k);
+          benchKeysOrdered.push(k);
+        }
+      }
+    }
+
+    // Find the best (max) value for each benchmark column to highlight
+    const bestVals = {};
+    for (const bk of benchKeysOrdered) {
+      let best = -Infinity;
+      for (const c of configs) {
+        const v = (c.benchmarks || {})[bk];
+        if (v !== null && v !== undefined && typeof v === 'number') {
+          if (v > best) best = v;
+        }
+      }
+      if (best > -Infinity) bestVals[bk] = best;
+    }
+
+    html += '<div class="detail-section" style="grid-column:1/-1"><h3>Configurations (' + configs.length + ')</h3>';
+    html += '<div class="config-table-wrap"><table class="config-table"><thead><tr>';
+    html += '<th>Configuration</th><th>Sources</th>';
+    for (const bk of benchKeysOrdered) {
+      const label = bk.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g, ch => ch.toUpperCase());
+      html += `<th class="bench-col">${esc(label)}</th>`;
+    }
+    html += '</tr></thead><tbody>';
+
+    for (const c of configs) {
+      const isBase = !c.reasoning_mode && !c.effort_level;
+      html += '<tr>';
+      // Config name + tags
+      html += '<td class="config-name-cell">';
+      const cLabel = isBase ? 'Base' : (c.config_id || '').split(':').slice(1).join(':') || 'Config';
+      html += esc(cLabel);
+      if (c.reasoning_mode) {
+        const tagCls = c.reasoning_mode === 'reasoning' ? 'tag-reasoning' :
+                       c.reasoning_mode === 'adaptive' ? 'tag-adaptive' : 'tag-non-reasoning';
+        html += ` <span class="config-tag ${tagCls}">${esc(c.reasoning_mode)}</span>`;
+      }
+      if (c.effort_level) {
+        html += ` <span class="config-tag tag-effort">${esc(c.effort_level)}</span>`;
+      }
+      html += '</td>';
+      // Source names
+      html += '<td style="font-size:10px;color:var(--color-text-muted);max-width:200px;white-space:normal">';
+      html += (c.source_names || []).map(n => esc(n)).join(', ');
+      html += '</td>';
+      // Benchmark values
+      for (const bk of benchKeysOrdered) {
+        const v = (c.benchmarks || {})[bk];
+        if (v === null || v === undefined) {
+          html += '<td class="bench-null">\u2014</td>';
+        } else {
+          const display = typeof v === 'number' ? (v > 0 && v < 1 ? (v*100).toFixed(1)+'%' : Number(v).toFixed(1)) : v;
+          const isBest = configs.length > 2 && bestVals[bk] !== undefined && v === bestVals[bk];
+          html += `<td class="${isBest ? 'bench-best' : 'bench-val'}">${esc(String(display))}</td>`;
+        }
+      }
+      html += '</tr>';
+    }
+
+    html += '</tbody></table></div></div>';
+  }
+
+  // Benchmarks section (model-level aggregate)
+  const bench = m.benchmarks || {};
+  const benchEntries = Object.entries(bench).filter(([k,v]) => v !== null && v !== undefined);
+  if (benchEntries.length > 0) {
+    html += '<div class="detail-section"><h3>Benchmarks (Aggregate)</h3><div class="detail-grid">';
+    for (const [k, v] of benchEntries) {
+      const label = k.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      const display = typeof v === 'number' ? (v < 1 && v > 0 ? (v*100).toFixed(1)+'%' : v.toFixed(2)) : v;
+      html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Performance section
+  if (m.output_tokens_per_sec || m.time_to_first_token_s) {
+    html += '<div class="detail-section"><h3>Performance</h3><div class="detail-grid">';
+    const perfFields = [
+      ['Output tok/s', m.output_tokens_per_sec?.toFixed(1)],
+      ['TTFT', m.time_to_first_token_s ? m.time_to_first_token_s.toFixed(2)+'s' : null],
+      ['TTFA', m.time_to_first_answer_s ? m.time_to_first_answer_s.toFixed(2)+'s' : null],
+    ];
+    for (const [label, val] of perfFields) {
+      html += `<span class="label">${esc(label)}</span><span class="value">${esc(val||'\u2014')}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Capabilities section
+  const caps = [
+    ['Vision', m.supports_vision], ['Function Calling', m.supports_function_calling],
+    ['Web Search', m.supports_web_search], ['PDF Input', m.supports_pdf_input],
+    ['Audio In', m.supports_audio_input], ['Audio Out', m.supports_audio_output],
+    ['Video In', m.supports_video_input], ['Prompt Caching', m.supports_prompt_caching],
+    ['Computer Use', m.supports_computer_use],
+  ].filter(([_,v]) => v !== null && v !== undefined);
+  if (caps.length > 0) {
+    html += '<div class="detail-section"><h3>Capabilities</h3><div class="detail-grid">';
+    for (const [label, val] of caps) {
+      const icon = val ? '\u2713' : '\u2715';
+      const color = val ? 'var(--color-success)' : 'var(--color-text-dim)';
+      html += `<span class="label">${esc(label)}</span><span class="value" style="color:${color}">${icon}</span>`;
+    }
+    if (m.supported_modalities?.length) {
+      html += `<span class="label">Modalities</span><span class="value">${esc(m.supported_modalities.join(', '))}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Provider pricing (from Bifrost) — enhanced comparison table
+  if (m.provider_pricing?.length > 0) {
+    const pp = m.provider_pricing;
+    const hasBatch = pp.some(p => p.batch_input_price_per_1m != null);
+    const hasPriority = pp.some(p => p.priority_input_price_per_1m != null);
+    const hasFlex = pp.some(p => p.flex_input_price_per_1m != null);
+    const hasReasoning = pp.some(p => p.reasoning_output_price_per_1m != null);
+    const hasRPM = pp.some(p => p.rpm != null);
+    const hasTPM = pp.some(p => p.tpm != null);
+
+    // Sort: free first, then cheapest paid
+    const sorted = [...pp].sort((a, b) => {
+      if (a.is_free && !b.is_free) return -1;
+      if (!a.is_free && b.is_free) return 1;
+      const ap = a.input_price_per_1m ?? Infinity;
+      const bp = b.input_price_per_1m ?? Infinity;
+      return ap - bp;
+    });
+
+    // Find cheapest paid provider
+    const cheapestPaid = sorted.find(p => !p.is_free && p.input_price_per_1m > 0);
+
+    // Self-hosted providers
+    const selfHosted = new Set(['ollama', 'lemonade', 'sagemaker']);
+
+    html += '<div class="detail-section" style="grid-column:1/-1"><h3>Provider Pricing Comparison (per 1M tokens)</h3>';
+    html += '<table class="pricing-table"><thead><tr>';
+    html += '<th>Provider</th><th>Input</th><th>Output</th>';
+    if (hasBatch) html += '<th>Batch In</th><th>Batch Out</th>';
+    if (hasPriority) html += '<th>Priority In</th><th>Priority Out</th>';
+    if (hasFlex) html += '<th>Flex In</th><th>Flex Out</th>';
+    if (hasReasoning) html += '<th>Reasoning Out</th>';
+    if (hasRPM) html += '<th>RPM</th>';
+    if (hasTPM) html += '<th>TPM</th>';
+    html += '<th>Tier</th>';
+    html += '</tr></thead><tbody>';
+
+    const totalCols = 3 + (hasBatch?2:0) + (hasPriority?2:0) + (hasFlex?2:0) + (hasReasoning?1:0) + (hasRPM?1:0) + (hasTPM?1:0) + 1;
+
+    for (const p of sorted.slice(0, 25)) {
+      const isCheapest = cheapestPaid && p === cheapestPaid;
+      const rowClass = p.is_free ? 'free-row' : (isCheapest ? 'cheapest-row' : '');
+      html += `<tr class="${rowClass}">`;
+
+      // Provider name with badges
+      let provLabel = esc(p.provider);
+      if (p.is_free) provLabel = '<span class="tier-badge badge-free">FREE</span> ' + provLabel;
+      if (isCheapest) provLabel = '<span class="badge-cheapest">\u2605</span> ' + provLabel;
+      html += `<td style="font-family:var(--font-body)">${provLabel}</td>`;
+
+      // Standard pricing
+      if (p.is_free) {
+        html += '<td style="color:var(--color-success)">FREE</td>';
+        html += '<td style="color:var(--color-success)">FREE</td>';
+      } else {
+        html += `<td>${p.input_price_per_1m != null ? '$'+fmtPrice(p.input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.output_price_per_1m != null ? '$'+fmtPrice(p.output_price_per_1m) : '\u2014'}</td>`;
+      }
+
+      // Batch
+      if (hasBatch) {
+        html += `<td>${p.batch_input_price_per_1m != null ? '$'+fmtPrice(p.batch_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.batch_output_price_per_1m != null ? '$'+fmtPrice(p.batch_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Priority
+      if (hasPriority) {
+        html += `<td>${p.priority_input_price_per_1m != null ? '$'+fmtPrice(p.priority_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.priority_output_price_per_1m != null ? '$'+fmtPrice(p.priority_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Flex
+      if (hasFlex) {
+        html += `<td>${p.flex_input_price_per_1m != null ? '$'+fmtPrice(p.flex_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.flex_output_price_per_1m != null ? '$'+fmtPrice(p.flex_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Reasoning
+      if (hasReasoning) {
+        html += `<td>${p.reasoning_output_price_per_1m != null ? '$'+fmtPrice(p.reasoning_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // RPM
+      if (hasRPM) {
+        html += `<td>${p.rpm != null ? p.rpm.toLocaleString() : '\u2014'}</td>`;
+      }
+      // TPM
+      if (hasTPM) {
+        html += `<td>${p.tpm != null ? p.tpm.toLocaleString() : '\u2014'}</td>`;
+      }
+
+      // Tier label
+      let tier = 'std';
+      if (p.is_free) {
+        tier = selfHosted.has(p.provider) ? 'self-hosted' : 'free';
+      }
+      html += `<td style="font-family:var(--font-body);font-size:10px;color:var(--color-text-muted)">${tier}</td>`;
+      html += '</tr>';
+    }
+
+    if (sorted.length > 25) {
+      html += `<tr><td colspan="${totalCols}" style="color:var(--color-text-muted)">\u2026 and ${sorted.length - 25} more providers</td></tr>`;
+    }
+    html += '</tbody></table>';
+
+    // Legend
+    html += '<div class="pricing-legend">';
+    html += '<span class="badge-cheapest">\u2605</span> = cheapest paid option';
+    if (pp.some(p => p.is_free)) html += ' &nbsp;\u00B7&nbsp; <span class="tier-badge badge-free">FREE</span> = $0 pricing (may have rate limits or restrictions)';
+    html += '</div>';
+    html += '</div>';
+  }
+
+  // Vendor pricing (from Vantage)
+  if (m.vendor_pricing?.length > 0) {
+    html += '<div class="detail-section"><h3>Cloud Vendor Pricing (per 1M tokens)</h3>';
+    html += '<table class="pricing-table"><thead><tr><th>Vendor</th><th>Input</th><th>Output</th></tr></thead><tbody>';
+    for (const v of m.vendor_pricing) {
+      html += `<tr><td>${esc(v.vendor)}</td>`;
+      html += `<td>${v.input_price_per_1m !== null ? '$'+fmtPrice(v.input_price_per_1m) : '\u2014'}</td>`;
+      html += `<td>${v.output_price_per_1m !== null ? '$'+fmtPrice(v.output_price_per_1m) : '\u2014'}</td>`;
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ── Setup UI ───────────────────────────────────────────────────
+function setupUI() {
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.dataset.theme === 'dark';
+    html.dataset.theme = isDark ? 'light' : 'dark';
+    toggle.textContent = isDark ? 'Dark' : 'Light';
+    render();
+  });
+
+  // Column group buttons
+  const groupsEl = document.getElementById('col-groups');
+  for (const gName of Object.keys(COL_GROUPS)) {
+    const btn = document.createElement('button');
+    btn.className = 'col-group-btn' + (activeGroups.has(gName) ? ' active' : '');
+    btn.textContent = gName;
+    btn.addEventListener('click', () => {
+      if (activeGroups.has(gName)) activeGroups.delete(gName);
+      else activeGroups.add(gName);
+      btn.classList.toggle('active');
+      render();
+    });
+    groupsEl.appendChild(btn);
+  }
+
+  // Source badges
+  const srcEl = document.getElementById('source-badges');
+  for (const src of ['aa','hf','vantage','bifrost']) {
+    const badge = document.createElement('span');
+    badge.className = 'source-badge active';
+    badge.textContent = src;
+    badge.addEventListener('click', () => {
+      if (activeSources.has(src)) activeSources.delete(src);
+      else activeSources.add(src);
+      badge.classList.toggle('active');
+      render();
+    });
+    srcEl.appendChild(badge);
+  }
+
+  // Creator badges
+  const creatorCounts = {};
+  for (const m of allModels) {
+    creatorCounts[m.creator] = (creatorCounts[m.creator] || 0) + 1;
+  }
+  const topCreators = Object.entries(creatorCounts)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 20)
+    .map(([name]) => name);
+
+  const badgesEl = document.getElementById('creator-badges');
+  for (const creator of topCreators) {
+    const badge = document.createElement('span');
+    badge.className = 'creator-badge';
+    badge.textContent = creator;
+    const color = CREATOR_COLORS[creator];
+    if (color) badge.style.borderColor = color;
+    badge.addEventListener('click', () => {
+      if (activeCreators.has(creator)) {
+        activeCreators.delete(creator);
+        badge.classList.remove('active');
+        if (color) { badge.style.background = ''; badge.style.color = ''; }
+      } else {
+        activeCreators.add(creator);
+        badge.classList.add('active');
+        if (color) { badge.style.background = color; badge.style.color = '#111'; }
+      }
+      render();
+    });
+    badgesEl.appendChild(badge);
+  }
+
+  // Search + filters
+  document.getElementById('search').addEventListener('input', debounce(render, 150));
+  document.getElementById('reasoning-filter').addEventListener('change', render);
+  document.getElementById('open-only').addEventListener('change', render);
+  document.getElementById('has-free-tier').addEventListener('change', render);
+  document.getElementById('has-configs').addEventListener('change', render);
+
+  const slider = document.getElementById('price-slider');
+  const priceVal = document.getElementById('price-val');
+  slider.addEventListener('input', () => {
+    const v = parseInt(slider.value);
+    priceVal.textContent = v >= 100 ? 'any' : '$'+v;
+    render();
+  });
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ── Init ───────────────────────────────────────────────────────
+async function init() {
+  try {
+    const resp = await fetch('../data/merged_models.json');
+    if (!resp.ok) throw new Error('Failed to load data: ' + resp.status);
+    const data = await resp.json();
+    allModels = data.models || [];
+    setupUI();
+    render();
+  } catch(e) {
+    document.getElementById('table-wrapper').innerHTML =
+      `<div class="error-msg">Error loading data: ${esc(e.message)}<br><br>Make sure merged_models.json exists in the data/ directory.</div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
