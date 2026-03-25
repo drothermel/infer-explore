@@ -374,6 +374,58 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
   font-family: var(--font-mono);
   white-space: nowrap;
 }
+.pricing-table tr.cheapest-row { border-left: 3px solid var(--color-success); }
+.pricing-table tr.free-row { opacity: 0.85; }
+.pricing-table tr.free-row td { font-style: italic; }
+
+.tier-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.badge-free {
+  background: var(--color-success);
+  color: #111;
+}
+.badge-batch {
+  background: var(--color-primary);
+  color: #111;
+}
+.badge-priority {
+  background: var(--color-accent);
+  color: #111;
+}
+.badge-flex {
+  background: #a78bfa;
+  color: #111;
+}
+.badge-cheapest {
+  color: var(--color-success);
+  font-weight: 600;
+}
+.rate-limit-info {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+.free-warning {
+  font-size: 10px;
+  color: var(--color-accent);
+  font-style: italic;
+}
+.pricing-legend {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-border);
+}
 
 /* Loading */
 .loading {
@@ -435,6 +487,7 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
       </select>
     </div>
     <label class="filter-checkbox"><input type="checkbox" id="open-only"> Open-weight only</label>
+    <label class="filter-checkbox"><input type="checkbox" id="has-free-tier"> Has free tier</label>
     <div class="price-slider-group">
       <label>Max input $/1M:</label>
       <input type="range" class="price-slider" id="price-slider" min="0" max="100" value="100" step="1">
@@ -489,10 +542,12 @@ const COL_GROUPS = {
   Pricing: [
     {key:'input_price_per_1m', label:'Input $/1M', fmt:'price'},
     {key:'output_price_per_1m', label:'Output $/1M', fmt:'price'},
+    {key:'min_input_price_per_1m', label:'Min In', fmt:'price'},
+    {key:'max_input_price_per_1m', label:'Max In', fmt:'price'},
     {key:'blended_price_per_1m', label:'Blended $/1M', fmt:'price'},
-    {key:'cache_read_price_per_1m', label:'Cache Read', fmt:'price'},
-    {key:'cache_write_price_per_1m', label:'Cache Write', fmt:'price'},
     {key:'num_providers', label:'Providers', fmt:'int'},
+    {key:'num_free_providers', label:'# Free', fmt:'int'},
+    {key:'has_batch_pricing', label:'Batch', fmt:'bool'},
   ],
   Performance: [
     {key:'output_tokens_per_sec', label:'Tok/s', fmt:'num1'},
@@ -630,6 +685,7 @@ function getFiltered() {
   const q = document.getElementById('search').value.toLowerCase().trim();
   const reasoningFilter = document.getElementById('reasoning-filter').value;
   const openOnly = document.getElementById('open-only').checked;
+  const hasFreeTier = document.getElementById('has-free-tier').checked;
   const maxPrice = parseInt(document.getElementById('price-slider').value);
   const priceLimit = maxPrice >= 100 ? Infinity : maxPrice;
 
@@ -647,6 +703,8 @@ function getFiltered() {
     if (reasoningFilter && reasoningFilter !== 'any' && m.reasoning_tier !== reasoningFilter) return false;
     // Open-weight only
     if (openOnly && m.model_type !== 'open') return false;
+    // Has free tier
+    if (hasFreeTier && !m.has_free_tier) return false;
     // Price filter
     if (priceLimit < Infinity && (m.input_price_per_1m === null || m.input_price_per_1m > priceLimit)) return false;
     return true;
@@ -824,21 +882,113 @@ function renderDetail(m) {
     html += '</div></div>';
   }
 
-  // Provider pricing (from Bifrost)
+  // Provider pricing (from Bifrost) — enhanced comparison table
   if (m.provider_pricing?.length > 0) {
-    html += '<div class="detail-section"><h3>Provider Pricing (per 1M tokens)</h3>';
-    html += '<table class="pricing-table"><thead><tr><th>Provider</th><th>Input</th><th>Output</th><th>Cache Read</th></tr></thead><tbody>';
-    for (const p of m.provider_pricing.slice(0, 20)) {
-      html += `<tr><td>${esc(p.provider)}</td>`;
-      html += `<td>${p.input_price_per_1m !== null ? '$'+fmtPrice(p.input_price_per_1m) : '\u2014'}</td>`;
-      html += `<td>${p.output_price_per_1m !== null ? '$'+fmtPrice(p.output_price_per_1m) : '\u2014'}</td>`;
-      html += `<td>${p.cache_read_price_per_1m ? '$'+fmtPrice(p.cache_read_price_per_1m) : '\u2014'}</td>`;
+    const pp = m.provider_pricing;
+    const hasBatch = pp.some(p => p.batch_input_price_per_1m != null);
+    const hasPriority = pp.some(p => p.priority_input_price_per_1m != null);
+    const hasFlex = pp.some(p => p.flex_input_price_per_1m != null);
+    const hasReasoning = pp.some(p => p.reasoning_output_price_per_1m != null);
+    const hasRPM = pp.some(p => p.rpm != null);
+    const hasTPM = pp.some(p => p.tpm != null);
+
+    // Sort: free first, then cheapest paid
+    const sorted = [...pp].sort((a, b) => {
+      if (a.is_free && !b.is_free) return -1;
+      if (!a.is_free && b.is_free) return 1;
+      const ap = a.input_price_per_1m ?? Infinity;
+      const bp = b.input_price_per_1m ?? Infinity;
+      return ap - bp;
+    });
+
+    // Find cheapest paid provider
+    const cheapestPaid = sorted.find(p => !p.is_free && p.input_price_per_1m > 0);
+
+    // Self-hosted providers
+    const selfHosted = new Set(['ollama', 'lemonade', 'sagemaker']);
+
+    html += '<div class="detail-section" style="grid-column:1/-1"><h3>Provider Pricing Comparison (per 1M tokens)</h3>';
+    html += '<table class="pricing-table"><thead><tr>';
+    html += '<th>Provider</th><th>Input</th><th>Output</th>';
+    if (hasBatch) html += '<th>Batch In</th><th>Batch Out</th>';
+    if (hasPriority) html += '<th>Priority In</th><th>Priority Out</th>';
+    if (hasFlex) html += '<th>Flex In</th><th>Flex Out</th>';
+    if (hasReasoning) html += '<th>Reasoning Out</th>';
+    if (hasRPM) html += '<th>RPM</th>';
+    if (hasTPM) html += '<th>TPM</th>';
+    html += '<th>Tier</th>';
+    html += '</tr></thead><tbody>';
+
+    const totalCols = 3 + (hasBatch?2:0) + (hasPriority?2:0) + (hasFlex?2:0) + (hasReasoning?1:0) + (hasRPM?1:0) + (hasTPM?1:0) + 1;
+
+    for (const p of sorted.slice(0, 25)) {
+      const isCheapest = cheapestPaid && p === cheapestPaid;
+      const rowClass = p.is_free ? 'free-row' : (isCheapest ? 'cheapest-row' : '');
+      html += `<tr class="${rowClass}">`;
+
+      // Provider name with badges
+      let provLabel = esc(p.provider);
+      if (p.is_free) provLabel = '<span class="tier-badge badge-free">FREE</span> ' + provLabel;
+      if (isCheapest) provLabel = '<span class="badge-cheapest">\u2605</span> ' + provLabel;
+      html += `<td style="font-family:var(--font-body)">${provLabel}</td>`;
+
+      // Standard pricing
+      if (p.is_free) {
+        html += '<td style="color:var(--color-success)">FREE</td>';
+        html += '<td style="color:var(--color-success)">FREE</td>';
+      } else {
+        html += `<td>${p.input_price_per_1m != null ? '$'+fmtPrice(p.input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.output_price_per_1m != null ? '$'+fmtPrice(p.output_price_per_1m) : '\u2014'}</td>`;
+      }
+
+      // Batch
+      if (hasBatch) {
+        html += `<td>${p.batch_input_price_per_1m != null ? '$'+fmtPrice(p.batch_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.batch_output_price_per_1m != null ? '$'+fmtPrice(p.batch_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Priority
+      if (hasPriority) {
+        html += `<td>${p.priority_input_price_per_1m != null ? '$'+fmtPrice(p.priority_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.priority_output_price_per_1m != null ? '$'+fmtPrice(p.priority_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Flex
+      if (hasFlex) {
+        html += `<td>${p.flex_input_price_per_1m != null ? '$'+fmtPrice(p.flex_input_price_per_1m) : '\u2014'}</td>`;
+        html += `<td>${p.flex_output_price_per_1m != null ? '$'+fmtPrice(p.flex_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // Reasoning
+      if (hasReasoning) {
+        html += `<td>${p.reasoning_output_price_per_1m != null ? '$'+fmtPrice(p.reasoning_output_price_per_1m) : '\u2014'}</td>`;
+      }
+      // RPM
+      if (hasRPM) {
+        html += `<td>${p.rpm != null ? p.rpm.toLocaleString() : '\u2014'}</td>`;
+      }
+      // TPM
+      if (hasTPM) {
+        html += `<td>${p.tpm != null ? p.tpm.toLocaleString() : '\u2014'}</td>`;
+      }
+
+      // Tier label
+      let tier = 'std';
+      if (p.is_free) {
+        tier = selfHosted.has(p.provider) ? 'self-hosted' : 'free';
+      }
+      html += `<td style="font-family:var(--font-body);font-size:10px;color:var(--color-text-muted)">${tier}</td>`;
       html += '</tr>';
     }
-    if (m.provider_pricing.length > 20) {
-      html += `<tr><td colspan="4" style="color:var(--color-text-muted)">... and ${m.provider_pricing.length - 20} more</td></tr>`;
+
+    if (sorted.length > 25) {
+      html += `<tr><td colspan="${totalCols}" style="color:var(--color-text-muted)">\u2026 and ${sorted.length - 25} more providers</td></tr>`;
     }
-    html += '</tbody></table></div>';
+    html += '</tbody></table>';
+
+    // Legend
+    html += '<div class="pricing-legend">';
+    html += '<span class="badge-cheapest">\u2605</span> = cheapest paid option';
+    if (pp.some(p => p.is_free)) html += ' &nbsp;\u00B7&nbsp; <span class="tier-badge badge-free">FREE</span> = $0 pricing (may have rate limits or restrictions)';
+    html += '</div>';
+    html += '</div>';
   }
 
   // Vendor pricing (from Vantage)
@@ -936,6 +1086,7 @@ function setupUI() {
   document.getElementById('search').addEventListener('input', debounce(render, 150));
   document.getElementById('reasoning-filter').addEventListener('change', render);
   document.getElementById('open-only').addEventListener('change', render);
+  document.getElementById('has-free-tier').addEventListener('change', render);
 
   const slider = document.getElementById('price-slider');
   const priceVal = document.getElementById('price-val');

@@ -205,13 +205,46 @@ def _aggregate_bifrost(raw: dict[str, dict]) -> dict[str, dict]:
             inp = entry.get("input_cost_per_token")
             outp = entry.get("output_cost_per_token")
             if inp is not None or outp is not None:
+                def _to_1m(val):
+                    if val is not None:
+                        return val * 1_000_000
+                    return None
+
+                is_free = (inp is not None and inp == 0
+                           and outp is not None and outp == 0)
+
                 provider_pricing.append({
                     "provider": entry.get("provider", ""),
-                    "input_price_per_1m": inp * 1_000_000 if inp else None,
-                    "output_price_per_1m": outp * 1_000_000 if outp else None,
+                    "key": key,
+                    "input_price_per_1m": _to_1m(inp),
+                    "output_price_per_1m": _to_1m(outp),
                     "cache_read_price_per_1m": (
                         entry.get("cache_read_input_token_cost", 0) or 0
                     ) * 1_000_000 or None,
+                    "batch_input_price_per_1m": _to_1m(
+                        entry.get("input_cost_per_token_batches")
+                    ),
+                    "batch_output_price_per_1m": _to_1m(
+                        entry.get("output_cost_per_token_batches")
+                    ),
+                    "priority_input_price_per_1m": _to_1m(
+                        entry.get("input_cost_per_token_priority")
+                    ),
+                    "priority_output_price_per_1m": _to_1m(
+                        entry.get("output_cost_per_token_priority")
+                    ),
+                    "flex_input_price_per_1m": _to_1m(
+                        entry.get("input_cost_per_token_flex")
+                    ),
+                    "flex_output_price_per_1m": _to_1m(
+                        entry.get("output_cost_per_token_flex")
+                    ),
+                    "reasoning_output_price_per_1m": _to_1m(
+                        entry.get("output_cost_per_reasoning_token")
+                    ),
+                    "rpm": entry.get("rpm"),
+                    "tpm": entry.get("tpm"),
+                    "is_free": is_free,
                     "source_url": entry.get("source"),
                 })
 
@@ -677,6 +710,32 @@ def _build_record(
     # Provider pricing from Bifrost
     provider_pricing = bf.get("_provider_pricing", []) if bf else []
 
+    # Compute price range fields from provider pricing
+    paid_providers = [
+        p for p in provider_pricing
+        if p.get("input_price_per_1m") is not None and p["input_price_per_1m"] > 0
+    ]
+    free_providers = [
+        p for p in provider_pricing
+        if p.get("is_free")
+    ]
+
+    min_input_price = min((p["input_price_per_1m"] for p in paid_providers), default=None)
+    max_input_price = max((p["input_price_per_1m"] for p in paid_providers), default=None)
+    min_output_price = min(
+        (p["output_price_per_1m"] for p in paid_providers if p.get("output_price_per_1m") is not None),
+        default=None,
+    )
+    max_output_price = max(
+        (p["output_price_per_1m"] for p in paid_providers if p.get("output_price_per_1m") is not None),
+        default=None,
+    )
+    num_free_providers = len(free_providers)
+    num_paid_providers = len(paid_providers)
+    has_batch_pricing = any(p.get("batch_input_price_per_1m") is not None for p in provider_pricing)
+    has_priority_pricing = any(p.get("priority_input_price_per_1m") is not None for p in provider_pricing)
+    has_free_tier = num_free_providers > 0
+
     # Vendor pricing from Vantage
     vendor_pricing = _vantage_vendor_pricing(vn, vendors_meta) if vn else []
 
@@ -767,6 +826,15 @@ def _build_record(
         "cache_write_price_per_1m": cache_write,
         "provider_pricing": provider_pricing,
         "vendor_pricing": vendor_pricing,
+        "min_input_price_per_1m": min_input_price,
+        "max_input_price_per_1m": max_input_price,
+        "min_output_price_per_1m": min_output_price,
+        "max_output_price_per_1m": max_output_price,
+        "num_free_providers": num_free_providers,
+        "num_paid_providers": num_paid_providers,
+        "has_batch_pricing": has_batch_pricing,
+        "has_priority_pricing": has_priority_pricing,
+        "has_free_tier": has_free_tier,
 
         "output_tokens_per_sec": aa.get("median_output_tokens_per_second") if aa else None,
         "time_to_first_token_s": aa.get("median_time_to_first_token_seconds") if aa else None,
@@ -805,6 +873,10 @@ CSV_FIELDS = [
     "output_tokens_per_sec", "time_to_first_token_s",
     "supports_vision", "supports_function_calling", "supports_web_search",
     "supports_prompt_caching", "supports_pdf_input",
+    "min_input_price_per_1m", "max_input_price_per_1m",
+    "min_output_price_per_1m", "max_output_price_per_1m",
+    "num_free_providers", "num_paid_providers",
+    "has_batch_pricing", "has_priority_pricing", "has_free_tier",
     "num_providers", "sources",
     "hf_aggregate_score",
 ]
