@@ -1,0 +1,5879 @@
+{
+  "fetched_at": "2026-03-25T19:09:19.139853+00:00",
+  "source": "https://www.vantage.sh/models/data.json",
+  "vendors": {
+    "ibm": {
+      "cleanName": "IBM watsonx.ai",
+      "learnMoreUrl": "https://www.ibm.com/products/watsonx-ai",
+      "euOrUKRegions": [
+        "eu-de",
+        "eu-gb"
+      ],
+      "usaRegions": [
+        "us-south",
+        "us-east"
+      ],
+      "regionCleanNames": {
+        "": {
+          "us-south": "US South (Dallas)",
+          "us-east": "US East (Washington DC)",
+          "eu-de": "Europe (Frankfurt)",
+          "eu-gb": "Europe (London)",
+          "jp-tok": "Asia Pacific (Tokyo)"
+        }
+      }
+    },
+    "alibaba": {
+      "cleanName": "Alibaba Cloud Model Studio",
+      "learnMoreUrl": "https://www.alibabacloud.com/product/model-studio",
+      "euOrUKRegions": [],
+      "usaRegions": [],
+      "regionCleanNames": {
+        "": {
+          "cn-shanghai": "China (Shanghai)",
+          "ap-southeast-1": "Singapore"
+        }
+      }
+    },
+    "gcp": {
+      "cleanName": "Google Cloud Vertex AI",
+      "learnMoreUrl": "https://cloud.google.com/vertex-ai",
+      "euOrUKRegions": [
+        "europe-west1",
+        "europe-west4"
+      ],
+      "usaRegions": [
+        "us-central1",
+        "us-east4"
+      ],
+      "regionCleanNames": {
+        "": {
+          "us-central1": "US Central (Iowa)",
+          "us-east4": "US East (N. Virginia)",
+          "europe-west1": "Europe West (Belgium)",
+          "europe-west4": "Europe West (Netherlands)",
+          "asia-northeast1": "Asia Northeast (Tokyo)"
+        }
+      }
+    },
+    "deepseek": {
+      "cleanName": "DeepSeek API",
+      "learnMoreUrl": "https://www.deepseek.com",
+      "euOrUKRegions": [],
+      "usaRegions": [],
+      "regionCleanNames": {
+        "": {
+          "global": "Global"
+        }
+      }
+    },
+    "anthropic": {
+      "cleanName": "Anthropic API",
+      "learnMoreUrl": "https://www.anthropic.com",
+      "euOrUKRegions": [],
+      "usaRegions": [],
+      "regionCleanNames": {
+        "": {
+          "global": "Global"
+        }
+      }
+    },
+    "openai": {
+      "cleanName": "OpenAI API",
+      "learnMoreUrl": "https://openai.com",
+      "euOrUKRegions": [],
+      "usaRegions": [],
+      "regionCleanNames": {
+        "": {
+          "global": "Global"
+        }
+      }
+    },
+    "mistral": {
+      "cleanName": "Mistral AI",
+      "learnMoreUrl": "https://mistral.ai",
+      "euOrUKRegions": [
+        "global"
+      ],
+      "usaRegions": [],
+      "regionCleanNames": {
+        "": {
+          "global": "Global"
+        }
+      }
+    },
+    "aws": {
+      "cleanName": "AWS Bedrock",
+      "learnMoreUrl": "https://aws.amazon.com/bedrock",
+      "euOrUKRegions": [
+        "eu-south-1",
+        "eu-west-1",
+        "eu-west-2",
+        "eu-south-2",
+        "eu-north-1",
+        "eu-central-1",
+        "eu-west-3",
+        "eu-central-2"
+      ],
+      "usaRegions": [
+        "us-east-2",
+        "us-gov-west-1",
+        "us-east-1",
+        "us-west-2",
+        "us-west-1",
+        "us-gov-east-1"
+      ],
+      "regionCleanNames": {
+        "": {
+          "us-east-2": "US East (Ohio)",
+          "us-gov-west-1": "AWS GovCloud (US-West)",
+          "ap-northeast-1": "Asia Pacific (Tokyo)",
+          "ap-east-2": "Asia Pacific (Taipei)",
+          "eu-south-1": "EU (Milan)",
+          "us-east-1": "US East (N. Virginia)",
+          "us-west-2": "US West (Oregon)",
+          "ca-central-1": "Canada (Central)",
+          "me-south-1": "Middle East (Bahrain)",
+          "eu-west-1": "EU (Ireland)",
+          "ap-southeast-1": "Asia Pacific (Singapore)",
+          "sa-east-1": "South America (Sao Paulo)",
+          "eu-west-2": "EU (London)",
+          "ap-northeast-2": "Asia Pacific (Seoul)",
+          "ap-southeast-3": "Asia Pacific (Jakarta)",
+          "eu-south-2": "Europe (Spain)",
+          "eu-north-1": "EU (Stockholm)",
+          "ap-southeast-2": "Asia Pacific (Sydney)",
+          "il-central-1": "Israel (Tel Aviv)",
+          "eu-central-1": "EU (Frankfurt)",
+          "ap-south-1": "Asia Pacific (Mumbai)",
+          "ap-southeast-7": "Asia Pacific (Thailand)",
+          "us-west-1": "US West (N. California)",
+          "eu-west-3": "EU (Paris)",
+          "ap-southeast-5": "Asia Pacific (Malaysia)",
+          "ap-southeast-4": "Asia Pacific (Melbourne)",
+          "me-central-1": "Middle East (UAE)",
+          "ca-west-1": "Canada West (Calgary)",
+          "mx-central-1": "Mexico (Central)",
+          "ap-southeast-6": "Asia Pacific (New Zealand)",
+          "ap-south-2": "Asia Pacific (Hyderabad)",
+          "af-south-1": "Africa (Cape Town)",
+          "us-gov-east-1": "AWS GovCloud (US-East)",
+          "ap-northeast-3": "Asia Pacific (Osaka)",
+          "eu-central-2": "Europe (Zurich)"
+        }
+      }
+    }
+  },
+  "models": {
+    "llama-3-8b": {
+      "cleanName": "Llama 3 8B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-gov-west-1": [
+              3e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3e-07,
+              6e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "codestral": {
+      "cleanName": "Codestral",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1e-06,
+              3e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 32000,
+      "maxOutputTokens": 8191,
+      "releaseDate": "2025-08-01",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Codestral-22B-v0.1"
+      }
+    },
+    "gemini-2-0-flash": {
+      "cleanName": "Gemini 2.0 Flash",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "gcp",
+          "regionPricing": {
+            "us-central1": [
+              1e-07,
+              4e-07,
+              2.5e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 8192,
+      "trainingCutoff": "2024-08",
+      "releaseDate": "2024-12-11"
+    },
+    "qwen-coder": {
+      "cleanName": "Qwen Coder",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "alibaba",
+          "regionPricing": {
+            "cn-shanghai": [
+              3e-07,
+              1.5e-06,
+              null,
+              null
+            ],
+            "ap-southeast-1": [
+              3e-07,
+              1.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1000000,
+      "maxOutputTokens": 16384,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen2.5-Coder-32B-Instruct"
+      }
+    },
+    "claude-haiku-4-5": {
+      "cleanName": "Claude Haiku 4.5",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              1e-06,
+              5e-06,
+              1e-07,
+              null
+            ]
+          },
+          "latencyMs": 420,
+          "tokensPerSecond": 108,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 64000,
+      "trainingCutoff": "2025-07",
+      "releaseDate": "2025-10-01",
+      "sweBenchResolvedPercentage": 66.6,
+      "sweBenchCostPerResolved": 0.004968835376876878
+    },
+    "granite-3-8b-instruct": {
+      "cleanName": "Granite 3 8B Instruct",
+      "company": "IBM",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "ibm",
+          "regionPricing": {
+            "us-south": [
+              2e-07,
+              2e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 8192,
+      "maxOutputTokens": 1024,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "ibm-granite/granite-3.0-8b-instruct"
+      }
+    },
+    "gpt-4o": {
+      "cleanName": "GPT-4o",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              5e-06,
+              1.5e-05,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 4096,
+      "trainingCutoff": "2023-10",
+      "releaseDate": "2024-05-13",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "sweBenchResolvedPercentage": 38.8
+    },
+    "deepseek-chat": {
+      "cleanName": "DeepSeek Chat",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              2.8e-07,
+              4.2e-07,
+              2.8e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 8192,
+      "releaseDate": "2024-12-26",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-V3"
+      }
+    },
+    "gpt-oss-20b": {
+      "cleanName": "gpt-oss-20b",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-northeast-1": [
+              4e-08,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              9.000000000000001e-08,
+              2.0000000000000002e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              4e-08,
+              3.1e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3.4999999999999996e-08,
+              1.5e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              5.0000000000000004e-08,
+              4.7e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              3.4999999999999996e-08,
+              1.5e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              8e-08,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              4e-08,
+              3.5e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              5.0000000000000004e-08,
+              4.0000000000000003e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              8e-08,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3.4999999999999996e-08,
+              1.5e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.999999999999999e-08,
+              3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 21730,
+          "tokensPerSecond": 377,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "devstral-medium": {
+      "cleanName": "Devstral Medium",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              4e-07,
+              2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "reasoningTier": "none",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 128000,
+      "releaseDate": "2025-07-10"
+    },
+    "gemini-2-0-flash-lite": {
+      "cleanName": "Gemini 2.0 Flash Lite",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "gcp",
+          "regionPricing": {
+            "us-central1": [
+              7.5e-08,
+              3e-07,
+              1.875e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 8192,
+      "trainingCutoff": "2024-08",
+      "releaseDate": "2024-12-11"
+    },
+    "claude-3-haiku": {
+      "cleanName": "Claude 3 Haiku",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              2.5e-07,
+              1.25e-06,
+              3e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 4096,
+      "trainingCutoff": "2023-08",
+      "releaseDate": "2024-03-07",
+      "sweBenchResolvedPercentage": 40.6
+    },
+    "mistral-large": {
+      "cleanName": "Mistral Large",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "ibm",
+          "regionPricing": {
+            "us-south": [
+              3e-06,
+              1e-05,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              4e-06,
+              1.2e-05,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 530,
+          "tokensPerSecond": 50,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 640,
+          "tokensPerSecond": 90,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 16384,
+      "trainingCutoff": "2024-11",
+      "releaseDate": "2024-02-26",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "gpt-4-turbo": {
+      "cleanName": "GPT-4 Turbo",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1e-05,
+              3e-05,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 4096,
+      "trainingCutoff": "2023-12",
+      "releaseDate": "2024-04-09",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/cl100k_base.tiktoken"
+      }
+    },
+    "deepseek-reasoner": {
+      "cleanName": "DeepSeek Reasoner",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              2.8e-07,
+              4.2e-07,
+              2.8e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 65536,
+      "releaseDate": "2025-01-20",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-R1"
+      }
+    },
+    "qwen-max": {
+      "cleanName": "Qwen Max",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "alibaba",
+          "regionPricing": {
+            "cn-shanghai": [
+              1.6e-06,
+              6.4e-06,
+              null,
+              null
+            ],
+            "ap-southeast-1": [
+              1.6e-06,
+              6.4e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 30720,
+      "maxOutputTokens": 8192,
+      "trainingCutoff": "2024-06",
+      "releaseDate": "2025-02-01",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen2.5-72B-Instruct"
+      }
+    },
+    "gemma-3-4b": {
+      "cleanName": "Gemma 3 4B",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-1": [
+              5.0000000000000004e-08,
+              9.000000000000001e-08,
+              null,
+              null
+            ],
+            "us-east-1": [
+              4e-08,
+              8e-08,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              3.0000000000000004e-08,
+              6.000000000000001e-08,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2e-08,
+              8e-08,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.0000000000000004e-08,
+              9.000000000000001e-08,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2e-08,
+              4e-08,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              3.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 610,
+          "tokensPerSecond": 179,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "google/gemma-3-1b-it"
+      }
+    },
+    "devstral-small": {
+      "cleanName": "Devstral Small",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1e-07,
+              3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 360,
+          "tokensPerSecond": 230,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "reasoningTier": "none",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 128000,
+      "releaseDate": "2025-07-10",
+      "sweBenchResolvedPercentage": 56.4
+    },
+    "gemini-2-5-flash": {
+      "cleanName": "Gemini 2.5 Flash",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "gcp",
+          "regionPricing": {
+            "us-central1": [
+              3e-07,
+              2.5e-06,
+              3e-08,
+              null
+            ]
+          },
+          "latencyMs": 6680,
+          "tokensPerSecond": 572,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 65535,
+      "trainingCutoff": "2025-01",
+      "releaseDate": "2025-03-25"
+    },
+    "claude-3-opus": {
+      "cleanName": "Claude 3 Opus",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              1.5e-05,
+              7.5e-05,
+              1.5e-06,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 4096,
+      "trainingCutoff": "2023-08",
+      "releaseDate": "2024-02-29",
+      "sweBenchResolvedPercentage": 15.8
+    },
+    "granite-3-3-8b-instruct": {
+      "cleanName": "Granite 3 3 8b Instruct",
+      "company": "IBM",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "ibm",
+          "regionPricing": {
+            "us-south": [
+              2e-07,
+              2e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 8192,
+      "maxOutputTokens": 8192,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "ibm-granite/granite-3.0-8b-instruct"
+      }
+    },
+    "gpt-4-1": {
+      "cleanName": "GPT-4.1",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              8e-06,
+              5e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1047576,
+      "maxOutputTokens": 32768,
+      "trainingCutoff": "2024-06",
+      "releaseDate": "2023-03-14",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "sweBenchResolvedPercentage": 22.4
+    },
+    "deepseek-coder": {
+      "cleanName": "DeepSeek Coder",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              1.4e-07,
+              2.8e-07,
+              1.4e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "reasoningTier": "none",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 4096
+    },
+    "qwen-plus": {
+      "cleanName": "Qwen Plus",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "alibaba",
+          "regionPricing": {
+            "cn-shanghai": [
+              4e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "ap-southeast-1": [
+              4e-07,
+              1.2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 129024,
+      "maxOutputTokens": 16384,
+      "releaseDate": "2025-02-01",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen2.5-32B-Instruct"
+      }
+    },
+    "deepseek-v3-2": {
+      "cleanName": "DeepSeek v3.2",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              6.2e-07,
+              1.85e-06,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              6.4e-07,
+              1.91e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              6.2e-07,
+              1.85e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6.2e-07,
+              1.85e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              9.61e-07,
+              2.8674999999999997e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              7.4e-07,
+              2.2200000000000003e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              2.8e-07,
+              4e-07,
+              2.8e-08,
+              null
+            ]
+          },
+          "latencyMs": 1400,
+          "tokensPerSecond": 30,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-V3"
+      },
+      "skatebenchScore": 65.23809523809524,
+      "skatebenchCostPerTest": 0.0005385825571428567
+    },
+    "labs-devstral-small": {
+      "cleanName": "Labs Devstral Small",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1e-07,
+              3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "reasoningTier": "none",
+      "maxInputTokens": 256000,
+      "maxOutputTokens": 256000
+    },
+    "gemini-2-5-flash-lite": {
+      "cleanName": "Gemini 2.5 Flash Lite",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "gcp",
+          "regionPricing": {
+            "us-central1": [
+              1e-07,
+              4e-07,
+              1e-08,
+              null
+            ]
+          },
+          "latencyMs": 6680,
+          "tokensPerSecond": 572,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 65535,
+      "trainingCutoff": "2025-01",
+      "releaseDate": "2025-03-25"
+    },
+    "claude-sonnet-4-5": {
+      "cleanName": "Claude Sonnet 4.5",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              3e-06,
+              1.5e-05,
+              3e-07,
+              null
+            ]
+          },
+          "latencyMs": 1570,
+          "tokensPerSecond": 78,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 64000,
+      "trainingCutoff": "2025-03",
+      "releaseDate": "2025-09-29",
+      "sweBenchResolvedPercentage": 74.8
+    },
+    "llama-3-3-70b-instruct": {
+      "cleanName": "Llama 3.3 70B Instruct",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "ibm",
+          "regionPricing": {
+            "us-south": [
+              7.1e-07,
+              7.1e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2023-12",
+      "releaseDate": "2024-12-06",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.3-70B-Instruct"
+      }
+    },
+    "gpt-4": {
+      "cleanName": "GPT-4",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              8e-06,
+              5e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1047576,
+      "maxOutputTokens": 32768,
+      "trainingCutoff": "2021-09",
+      "releaseDate": "2023-03-14",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/cl100k_base.tiktoken"
+      },
+      "sweBenchResolvedPercentage": 39.58,
+      "sweBenchCostPerResolved": 0.003696642849924204
+    },
+    "deepseek-r1": {
+      "cleanName": "DeepSeek R1",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              5.5e-07,
+              2.19e-06,
+              1.4e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              1.35e-06,
+              5.4e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.35e-06,
+              5.4e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.35e-06,
+              5.4e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 65536,
+      "maxOutputTokens": 8192,
+      "trainingCutoff": "2024-11",
+      "releaseDate": "2025-01-20",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-R1"
+      }
+    },
+    "qwen-turbo": {
+      "cleanName": "Qwen Turbo",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "alibaba",
+          "regionPricing": {
+            "cn-shanghai": [
+              5e-08,
+              2e-07,
+              null,
+              null
+            ],
+            "ap-southeast-1": [
+              5e-08,
+              2e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 129024,
+      "maxOutputTokens": 16384,
+      "releaseDate": "2025-02-01",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen2.5-14B-Instruct"
+      }
+    },
+    "llama-3-1-70b": {
+      "cleanName": "Llama 3.1 70B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              3.6000000000000005e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3.6000000000000005e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3.6000000000000005e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "kimi-k2-thinking": {
+      "cleanName": "Kimi K2 Thinking",
+      "company": "Kimi AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-south-1": [
+              7.1e-07,
+              1.47e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              3.6000000000000005e-07,
+              1.52e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3e-07,
+              1.25e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3e-07,
+              2.5e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3e-07,
+              2.5e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3.6000000000000005e-07,
+              1.52e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 620,
+          "tokensPerSecond": 85,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "skatebenchScore": 53.80952380952381,
+      "skatebenchCostPerTest": 0.001968405466666667,
+      "sweBenchResolvedPercentage": 63.4,
+      "sweBenchCostPerResolved": 0.006913363334384858,
+      "humanitysLastExamPercentage": 51
+    },
+    "devstral": {
+      "cleanName": "Devstral",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              4e-07,
+              2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 490,
+          "tokensPerSecond": 49,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-south-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              4.1e-07,
+              2.06e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              4.0000000000000003e-07,
+              2e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              4.0000000000000003e-07,
+              2e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              4.0000000000000003e-07,
+              2e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              6.2e-07,
+              3.1e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              4.800000000000001e-07,
+              2.4e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "reasoningTier": "none",
+      "maxInputTokens": 256000,
+      "maxOutputTokens": 256000,
+      "releaseDate": "2025-12-09",
+      "sweBenchResolvedPercentage": 56.4
+    },
+    "gemini-2-5-pro": {
+      "cleanName": "Gemini 2.5 Pro",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "gcp",
+          "regionPricing": {
+            "us-central1": [
+              1.25e-06,
+              1e-05,
+              1.25e-07,
+              null
+            ]
+          },
+          "latencyMs": 34100,
+          "tokensPerSecond": 160,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 1048576,
+      "maxOutputTokens": 65535,
+      "trainingCutoff": "2025-01",
+      "releaseDate": "2025-03-25"
+    },
+    "claude-sonnet-4-6": {
+      "cleanName": "Claude Sonnet 4.6",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              3e-06,
+              1.5e-05,
+              3e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 64000,
+      "trainingCutoff": "2026-01",
+      "releaseDate": "2026-02-17",
+      "skatebenchScore": 69.04761904761905,
+      "skatebenchCostPerTest": 0.025707428571428555,
+      "humanitysLastExamPercentage": 49
+    },
+    "gpt-4-1-mini": {
+      "cleanName": "GPT-4.1 Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              4e-07,
+              1.6e-06,
+              1e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1047576,
+      "maxOutputTokens": 32768,
+      "trainingCutoff": "2024-06",
+      "releaseDate": "2023-03-14",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "deepseek-v3": {
+      "cleanName": "DeepSeek V3",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "deepseek",
+          "regionPricing": {
+            "global": [
+              2.7e-07,
+              1.1e-06,
+              7e-08,
+              null
+            ]
+          },
+          "latencyMs": 1400,
+          "tokensPerSecond": 30,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 65536,
+      "maxOutputTokens": 8192,
+      "trainingCutoff": "2024-11",
+      "releaseDate": "2024-12-26",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-V3"
+      },
+      "skatebenchScore": 65.23809523809524,
+      "skatebenchCostPerTest": 0.0005385825571428567,
+      "sweBenchResolvedPercentage": 70,
+      "sweBenchCostPerResolved": 0.006397807092857143,
+      "humanitysLastExamPercentage": 30.599999999999998
+    },
+    "gemma-3-12b": {
+      "cleanName": "Gemma 3 12B",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-northeast-1": [
+              1.1e-07,
+              1.7000000000000001e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6.000000000000001e-08,
+              3.4000000000000003e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              6.000000000000001e-08,
+              3.4000000000000003e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              5.0000000000000004e-08,
+              2.9e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              6.000000000000001e-08,
+              3.5e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              1.3999999999999998e-07,
+              4.5e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              9.000000000000001e-08,
+              2.9e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              9.000000000000001e-08,
+              2.9e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.1e-07,
+              1.7000000000000001e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "google/gemma-3-1b-it"
+      }
+    },
+    "magistral-medium": {
+      "cleanName": "Magistral Medium",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 510,
+          "tokensPerSecond": 40,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 40000,
+      "maxOutputTokens": 40000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-05-29",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "claude-opus-4-1": {
+      "cleanName": "Claude Opus 4.1",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              1.5e-05,
+              7.5e-05,
+              1.5e-06,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 32000,
+      "trainingCutoff": "2025-03",
+      "releaseDate": "2025-08-05"
+    },
+    "gpt-4-1-nano": {
+      "cleanName": "GPT-4.1 Nano",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1e-07,
+              4e-07,
+              2.5e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1047576,
+      "maxOutputTokens": 32768,
+      "trainingCutoff": "2024-06",
+      "releaseDate": "2023-03-14",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "gpt-oss-safeguard-20b": {
+      "cleanName": "GPT OSS Safeguard 20B",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-2": [
+              6.000000000000001e-08,
+              3.1e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3.0000000000000004e-08,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3.0000000000000004e-08,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              4e-08,
+              2.3e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              8e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              4e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              8e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.999999999999999e-08,
+              2.0000000000000002e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              8e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "magistral-medium-1-2": {
+      "cleanName": "Magistral Medium 1 2",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 510,
+          "tokensPerSecond": 40,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 40000,
+      "maxOutputTokens": 40000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-05-29",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "claude-opus-4": {
+      "cleanName": "Claude Opus 4",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              1.5e-05,
+              7.5e-05,
+              1.5e-06,
+              null
+            ]
+          },
+          "latencyMs": 1950,
+          "tokensPerSecond": 75,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 32000,
+      "trainingCutoff": "2025-03",
+      "releaseDate": "2025-05-22",
+      "sweBenchResolvedPercentage": 79.2,
+      "humanitysLastExamPercentage": 53.1
+    },
+    "gpt-4o-mini": {
+      "cleanName": "GPT-4o Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.5e-07,
+              6e-07,
+              7.5e-08,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 16384,
+      "trainingCutoff": "2023-10",
+      "releaseDate": "2024-05-13",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "mixtral-8x7b": {
+      "cleanName": "Mixtral 8x7B",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mixtral-8x22B-Instruct-v0.1"
+      }
+    },
+    "magistral-small": {
+      "cleanName": "Magistral Small",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              5e-07,
+              1.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 330,
+          "tokensPerSecond": 206,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 40000,
+      "maxOutputTokens": 40000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-05-29",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "claude-opus-4-5": {
+      "cleanName": "Claude Opus 4.5",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              5e-06,
+              2.5e-05,
+              5e-07,
+              null
+            ]
+          },
+          "latencyMs": 1950,
+          "tokensPerSecond": 75,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 64000,
+      "trainingCutoff": "2025-03",
+      "releaseDate": "2025-11-01",
+      "skatebenchScore": 62.857142857142854,
+      "skatebenchCostPerTest": 0.04204488095238094,
+      "sweBenchResolvedPercentage": 79.2
+    },
+    "gpt-5": {
+      "cleanName": "GPT-5",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.25e-06,
+              1e-05,
+              1.25e-07,
+              null
+            ]
+          },
+          "latencyMs": 117230,
+          "tokensPerSecond": 117,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 272000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "skatebenchScore": 98.09523809523809,
+      "skatebenchCostPerTest": 0.014657654761904762,
+      "sweBenchResolvedPercentage": 75.6,
+      "humanitysLastExamPercentage": 39.800000000000004
+    },
+    "magistral-small-1-2": {
+      "cleanName": "Magistral Small 1 2",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              5e-07,
+              1.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 330,
+          "tokensPerSecond": 206,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              5e-07,
+              7.5e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              3e-07,
+              1.76e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              6.1e-07,
+              9.1e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              5.900000000000001e-07,
+              8.8e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2.5e-07,
+              7.5e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              6.1e-07,
+              1.82e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              7.799999999999999e-07,
+              1.17e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              5.900000000000001e-07,
+              8.8e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.5e-07,
+              1.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 600,
+          "tokensPerSecond": 43,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "extended",
+      "maxInputTokens": 40000,
+      "maxOutputTokens": 40000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-05-29",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "claude-opus-4-6": {
+      "cleanName": "Claude Opus 4.6",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              5e-06,
+              2.5e-05,
+              5e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 1000000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2025-08",
+      "releaseDate": "2026-02-05",
+      "skatebenchScore": 75.23809523809524,
+      "skatebenchCostPerTest": 0.013732023809523809,
+      "sweBenchResolvedPercentage": 75.6,
+      "sweBenchCostPerResolved": 0.007295273075396826,
+      "humanitysLastExamPercentage": 53.1
+    },
+    "gpt-5-1": {
+      "cleanName": "GPT-5.1",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.25e-06,
+              1e-05,
+              1.25e-07,
+              null
+            ]
+          },
+          "latencyMs": 16030,
+          "tokensPerSecond": 236,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 272000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "skatebenchScore": 91.42857142857143,
+      "skatebenchCostPerTest": 0.0069057976190476196
+    },
+    "ministral-8b-3-0": {
+      "cleanName": "Ministral 8B 3.0",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-1": [
+              1.8000000000000002e-07,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              2.3e-07,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              9.000000000000001e-08,
+              9.000000000000001e-08,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              1.8000000000000002e-07,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.8000000000000002e-07,
+              9.000000000000001e-08,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              1.8000000000000002e-07,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.5e-07,
+              6.999999999999999e-08,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.999999999999999e-08,
+              1.5e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.5e-07,
+              6.999999999999999e-08,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 590,
+          "tokensPerSecond": 232,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "llama-3-2-3b": {
+      "cleanName": "Llama 3.2 3B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              1.5e-07,
+              1.5e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              9.5e-08,
+              1.9e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.7000000000000001e-07,
+              1.7000000000000001e-07,
+              null,
+              null
+            ],
+            "eu-west-3": [
+              2.0000000000000002e-07,
+              2.0000000000000002e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.5e-07,
+              1.5e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              7.5e-08,
+              1.5e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 340,
+          "tokensPerSecond": 294,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.2-3B-Instruct"
+      }
+    },
+    "claude-sonnet-4": {
+      "cleanName": "Claude Sonnet 4",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "anthropic",
+          "regionPricing": {
+            "global": [
+              3e-06,
+              1.5e-05,
+              3e-07,
+              null
+            ]
+          },
+          "latencyMs": 1570,
+          "tokensPerSecond": 78,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "extended",
+      "maxInputTokens": 1000000,
+      "maxOutputTokens": 64000,
+      "trainingCutoff": "2025-03",
+      "releaseDate": "2025-05-14",
+      "sweBenchResolvedPercentage": 76.8,
+      "humanitysLastExamPercentage": 49
+    },
+    "gpt-5-2": {
+      "cleanName": "GPT-5.2",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.75e-06,
+              1.4e-05,
+              1.75e-07,
+              null
+            ]
+          },
+          "latencyMs": 29830,
+          "tokensPerSecond": 92,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 272000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "skatebenchScore": 86.66666666666667,
+      "skatebenchCostPerTest": 0.025553283333333333,
+      "sweBenchResolvedPercentage": 74.4
+    },
+    "mistral-large-3": {
+      "cleanName": "Mistral Large 3",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              5e-07,
+              1.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 530,
+          "tokensPerSecond": 50,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "sa-east-1": [
+              6.1e-07,
+              1.82e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3e-07,
+              1.82e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3e-07,
+              8.8e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              5e-07,
+              7.5e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              5e-07,
+              1.5e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.5e-07,
+              7.5e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 640,
+          "tokensPerSecond": 90,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 262144,
+      "maxOutputTokens": 262144,
+      "trainingCutoff": "2024-11",
+      "releaseDate": "2024-02-26",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "kimi-k2-5": {
+      "cleanName": "Kimi K2.5",
+      "company": "Moonshot AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              6e-07,
+              3e-06,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              6.2e-07,
+              3.09e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              9.300000000000001e-07,
+              4.6499999999999995e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6e-07,
+              3e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              6e-07,
+              3e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              7.200000000000001e-07,
+              3.6e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "skatebenchScore": 77.14285714285715,
+      "skatebenchCostPerTest": 0.004831418285714283
+    },
+    "gpt-5-4": {
+      "cleanName": "GPT-5.4",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              2.5e-06,
+              1.5e-05,
+              2.5e-07,
+              null
+            ]
+          },
+          "latencyMs": 117230,
+          "tokensPerSecond": 117,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 1050000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "mistral-medium": {
+      "cleanName": "Mistral Medium",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              2.7e-06,
+              8.1e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 400,
+          "tokensPerSecond": 89,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 32000,
+      "maxOutputTokens": 8191,
+      "trainingCutoff": "2024-07",
+      "releaseDate": "2023-12-11",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "gpt-5-4-mini": {
+      "cleanName": "GPT-5.4 Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              7.5e-07,
+              4.5e-06,
+              7.5e-08,
+              null
+            ]
+          },
+          "latencyMs": 117230,
+          "tokensPerSecond": 117,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 272000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "mistral-medium-3-1": {
+      "cleanName": "Mistral Medium 3 1",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              4e-07,
+              2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 400,
+          "tokensPerSecond": 89,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 131072,
+      "trainingCutoff": "2024-07",
+      "releaseDate": "2023-12-11",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "voxtral-small-1-0": {
+      "cleanName": "Voxtral Small 1.0",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-2": [
+              1.6e-07,
+              4.7e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              1.2000000000000002e-07,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.0000000000000001e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              6.000000000000001e-08,
+              1.8000000000000002e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.0000000000000001e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.2000000000000002e-07,
+              3.5e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              5.0000000000000004e-08,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              6.000000000000001e-08,
+              3.5e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6.000000000000001e-08,
+              3.5e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true
+    },
+    "gpt-5-mini": {
+      "cleanName": "GPT-5 Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              2.5e-07,
+              2e-06,
+              2.5e-08,
+              null
+            ]
+          },
+          "latencyMs": 117230,
+          "tokensPerSecond": 117,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "reasoningTier": "basic",
+      "maxInputTokens": 272000,
+      "maxOutputTokens": 128000,
+      "trainingCutoff": "2024-12",
+      "releaseDate": "2025-08-07",
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "skatebenchScore": 51.90476190476191,
+      "skatebenchCostPerTest": 0.001604902380952382,
+      "sweBenchResolvedPercentage": 59.8,
+      "sweBenchCostPerResolved": 0.0005932619949832777
+    },
+    "mistral-small": {
+      "cleanName": "Mistral Small",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1e-07,
+              3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 300,
+          "tokensPerSecond": 90,
+          "lowCapacity": false
+        },
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 32000,
+      "maxOutputTokens": 8191,
+      "trainingCutoff": "2024-09",
+      "releaseDate": "2024-09-17",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "glm-4-7": {
+      "cleanName": "GLM 4.7",
+      "company": "Z AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-southeast-2": [
+              6.2e-07,
+              2.27e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              9.300000000000001e-07,
+              3.41e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6e-07,
+              2.2e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              6e-07,
+              2.2e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              7.200000000000001e-07,
+              2.64e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6e-07,
+              2.2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true
+    },
+    "gpt-o1": {
+      "cleanName": "GPT-o1",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.5e-05,
+              6e-05,
+              7.5e-06,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": false,
+      "reasoningTier": "none",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 100000
+    },
+    "mistral-small-3-2": {
+      "cleanName": "Mistral Small 3 2",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              6e-08,
+              1.8e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 300,
+          "tokensPerSecond": 90,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 131072,
+      "trainingCutoff": "2024-09",
+      "releaseDate": "2024-09-17",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "gpt-o3": {
+      "cleanName": "GPT-o3",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              8e-06,
+              5e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": false,
+      "reasoningTier": "none",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 100000
+    },
+    "ministral-3-3b": {
+      "cleanName": "Ministral 3 3b",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1e-07,
+              1e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 131072,
+      "maxOutputTokens": 131072,
+      "releaseDate": "2025-12-02",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "qwen3-vl-235b-a22b": {
+      "cleanName": "Qwen3 VL 235B A22B",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-south-1": [
+              3.1e-07,
+              3.1199999999999998e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              6.4e-07,
+              3.22e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              5.3e-07,
+              2.66e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              5.3e-07,
+              1.33e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              6.4e-07,
+              1.61e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              3.1e-07,
+              3.1199999999999998e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              8.2e-07,
+              4.12e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6.2e-07,
+              1.5599999999999999e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              5.3e-07,
+              2.66e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-32B"
+      }
+    },
+    "gpt-o3-mini": {
+      "cleanName": "GPT-o3 Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.1e-06,
+              4.4e-06,
+              5.5e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": false,
+      "reasoningTier": "none",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 100000
+    },
+    "ministral-3-8b": {
+      "cleanName": "Ministral 3 8b",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1.5e-07,
+              1.5e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 262144,
+      "maxOutputTokens": 262144,
+      "releaseDate": "2025-12-02",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "llama-3-1-70b-latency-optimized": {
+      "cleanName": "Llama 3.1 70B Latency Optimized",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              9e-07,
+              9e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              9e-07,
+              9e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              9e-07,
+              9e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "gpt-o4-mini": {
+      "cleanName": "GPT-o4 Mini",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              1.1e-06,
+              4.4e-06,
+              2.75e-07,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": false,
+      "reasoningTier": "none",
+      "maxInputTokens": 200000,
+      "maxOutputTokens": 100000
+    },
+    "ministral-3-14b": {
+      "cleanName": "Ministral 3 14b",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              2e-07,
+              2e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 262144,
+      "maxOutputTokens": 262144,
+      "releaseDate": "2025-12-02",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "glm-4-7-flash": {
+      "cleanName": "GLM 4.7 Flash",
+      "company": "Z AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6.999999999999999e-08,
+              4.0000000000000003e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              6.999999999999999e-08,
+              4.0000000000000003e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              1.1e-07,
+              6.2e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              8e-08,
+              4.800000000000001e-07,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              6.999999999999999e-08,
+              4.1e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.999999999999999e-08,
+              4.0000000000000003e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true
+    },
+    "gpt-oss-safeguard-120b": {
+      "cleanName": "GPT OSS Safeguard 120B",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-south-1": [
+              9.000000000000001e-08,
+              7.1e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.8000000000000002e-07,
+              3.5e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              9.000000000000001e-08,
+              3.5e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.999999999999999e-08,
+              6e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.5e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.8000000000000002e-07,
+              7.3e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6.999999999999999e-08,
+              3e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              1.8000000000000002e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              1.2000000000000002e-07,
+              4.7e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      }
+    },
+    "pixtral-12b": {
+      "cleanName": "Pixtral 12B",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              1.5e-07,
+              1.5e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 128000,
+      "releaseDate": "2024-09-10",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Pixtral-Large-Instruct-2411"
+      }
+    },
+    "gpt-oss-120b": {
+      "cleanName": "gpt-oss-120b",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-northeast-1": [
+              9.000000000000001e-08,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              7.5e-08,
+              6e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.5e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              9.000000000000001e-08,
+              7e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.5e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              1.5e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              8e-08,
+              6.2e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              2.0000000000000002e-07,
+              7.900000000000001e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.8000000000000002e-07,
+              7.1e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              1.0000000000000001e-07,
+              4.0000000000000003e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              9.000000000000001e-08,
+              7.3e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              2.3e-07,
+              4.7e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 600,
+          "tokensPerSecond": 261,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "tiktoken",
+        "bpePath": "/tiktoken/o200k_base.tiktoken"
+      },
+      "skatebenchScore": 17.61904761904762,
+      "skatebenchCostPerTest": 0.0005834128571428573,
+      "sweBenchResolvedPercentage": 26,
+      "sweBenchCostPerResolved": 0.002196886761538461
+    },
+    "pixtral-large": {
+      "cleanName": "Pixtral Large",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "mistral",
+          "regionPricing": {
+            "global": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "reasoningTier": "basic",
+      "maxInputTokens": 128000,
+      "maxOutputTokens": 128000,
+      "releaseDate": "2024-11-19",
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Pixtral-Large-Instruct-2411"
+      }
+    },
+    "nvidia-nemotron-nano-2": {
+      "cleanName": "NVIDIA Nemotron Nano 2",
+      "company": "Nvidia",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              3.0000000000000004e-08,
+              2.3e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              6.000000000000001e-08,
+              2.3e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3.0000000000000004e-08,
+              1.3999999999999998e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              3.0000000000000004e-08,
+              2.7e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6.999999999999999e-08,
+              2.7e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3.0000000000000004e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              9.000000000000001e-08,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              3.0000000000000004e-08,
+              1.3999999999999998e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              3.0000000000000004e-08,
+              2.7e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true
+    },
+    "qwen3-coder-480b-a35b": {
+      "cleanName": "Qwen3 Coder 480B A35B",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-2": [
+              3.5e-07,
+              2.79e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              4.5e-07,
+              9e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.25e-07,
+              9e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              4.7e-07,
+              1.8699999999999999e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              2.65e-07,
+              1.06e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              4.5e-07,
+              1.8e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              5.4e-07,
+              2.18e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+      },
+      "sweBenchResolvedPercentage": 55.4,
+      "sweBenchCostPerResolved": 0.004475218555956679
+    },
+    "nvidia-nemotron-nano-2-vl": {
+      "cleanName": "NVIDIA Nemotron Nano 2 VL",
+      "company": "Nvidia",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-2": [
+              1.5e-07,
+              9.300000000000001e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.2000000000000002e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              1.2000000000000002e-07,
+              3.5e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              2.4000000000000003e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.0000000000000002e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.0000000000000001e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.0000000000000001e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.2000000000000002e-07,
+              3.5e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.2000000000000002e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true
+    },
+    "ministral-3b-3-0": {
+      "cleanName": "Ministral 3B 3.0",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "sa-east-1": [
+              6.000000000000001e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              5.0000000000000004e-08,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              1.2000000000000002e-07,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              1.6e-07,
+              1.6e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6.000000000000001e-08,
+              6.000000000000001e-08,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.0000000000000001e-07,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.2000000000000002e-07,
+              6.000000000000001e-08,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              6.000000000000001e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 600,
+          "tokensPerSecond": 357,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "qwen3-next-80b-a3b": {
+      "cleanName": "Qwen3 Next 80B A3B",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-32B"
+      }
+    },
+    "minimax-m2-1": {
+      "cleanName": "Minimax M2.1",
+      "company": "Minimax AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-2": [
+              3e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              3.1e-07,
+              1.24e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              3e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              3.6000000000000005e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              4.7e-07,
+              1.8600000000000002e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 620,
+          "tokensPerSecond": 72,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true
+    },
+    "qwen3-coder-next": {
+      "cleanName": "Qwen3 Coder Next",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-north-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              7.799999999999999e-07,
+              1.8600000000000002e-06,
+              null,
+              null
+            ],
+            "ap-southeast-2": [
+              5.2e-07,
+              1.24e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              5e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              6e-07,
+              1.4400000000000002e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              5e-07,
+              1.2e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              5e-07,
+              1.2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+      }
+    },
+    "qwen3-coder-30b-a3b": {
+      "cleanName": "Qwen3 Coder 30B A3B",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              7.5e-08,
+              3e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.8000000000000002e-07,
+              7.3e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              1.5e-07,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              1.0000000000000001e-07,
+              7.900000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.5e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              7.5e-08,
+              6e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              1.15e-07,
+              9.300000000000001e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              2.0000000000000002e-07,
+              7.900000000000001e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              9.000000000000001e-08,
+              7e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              8e-08,
+              6.2e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.8000000000000002e-07,
+              3.55e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              9.000000000000001e-08,
+              3.65e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 690,
+          "tokensPerSecond": 103,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-Coder-480B-A35B-Instruct"
+      },
+      "sweBenchResolvedPercentage": 60.4
+    },
+    "minimax-m2": {
+      "cleanName": "Minimax M2",
+      "company": "Minimax AI",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-northeast-1": [
+              3.6000000000000005e-07,
+              1.4499999999999999e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.5e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.7000000000000001e-07,
+              1.41e-06,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              1.7000000000000001e-07,
+              1.41e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              3.6000000000000005e-07,
+              1.4499999999999999e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3e-07,
+              6e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.5e-07,
+              1.41e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              4.7e-07,
+              1.8600000000000002e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 620,
+          "tokensPerSecond": 72,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "skatebenchScore": 16.19047619047619,
+      "skatebenchCostPerTest": 0.0004275066666666667,
+      "sweBenchResolvedPercentage": 75.8,
+      "sweBenchCostPerResolved": 0.0009668863831662269
+    },
+    "deepseek-v3-1": {
+      "cleanName": "DeepSeek V3.1",
+      "company": "DeepSeek",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-southeast-3": [
+              3e-07,
+              8.7e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              2.9e-07,
+              1.68e-06,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              4.49992e-07,
+              1.3034260000000002e-06,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3.50833e-07,
+              1.016206e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              5.8e-07,
+              8.4e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.41212e-07,
+              9.88339e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.9e-07,
+              8.4e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "deepseek-ai/DeepSeek-V3"
+      }
+    },
+    "gemma-3-27b": {
+      "cleanName": "Gemma 3 27B",
+      "company": "Google",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              1.2000000000000002e-07,
+              3.8e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              2.7e-07,
+              2.2e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.2000000000000002e-07,
+              3.8e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.3999999999999998e-07,
+              4.5e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.3999999999999998e-07,
+              2.3e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              3.6000000000000005e-07,
+              5.900000000000001e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              1.3999999999999998e-07,
+              4.6e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              2.7e-07,
+              4.5e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2.3e-07,
+              3.8e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 620,
+          "tokensPerSecond": 95,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "google/gemma-3-1b-it"
+      }
+    },
+    "qwen3-32b": {
+      "cleanName": "Qwen3 32B",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "ap-southeast-3": [
+              1.6e-07,
+              3.1e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.8000000000000002e-07,
+              7.1e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              9.000000000000001e-08,
+              3.5e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              7.5e-08,
+              3e-07,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              7.5e-08,
+              6e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              7.5e-08,
+              6e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              2.3e-07,
+              4.6500000000000005e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              1.8000000000000002e-07,
+              3.65e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              2.0000000000000002e-07,
+              7.900000000000001e-07,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              1.0000000000000001e-07,
+              4.0000000000000003e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              7.5e-08,
+              3e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              1.8000000000000002e-07,
+              3.65e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-32B"
+      }
+    },
+    "llama-3-1-405b": {
+      "cleanName": "Llama 3.1 405B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              1.2e-06,
+              1.2e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2.4e-06,
+              2.4e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.2e-06,
+              1.2e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 450,
+          "tokensPerSecond": 73,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "ministral-14b-3-0": {
+      "cleanName": "Ministral 14B 3.0",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "sa-east-1": [
+              1.2000000000000002e-07,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              3.1e-07,
+              3.1e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              2.4000000000000003e-07,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.2000000000000002e-07,
+              2.3e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.0000000000000001e-07,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2.0000000000000002e-07,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              1.2000000000000002e-07,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              2.3e-07,
+              2.3e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              1.0000000000000001e-07,
+              1.0000000000000001e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 610,
+          "tokensPerSecond": 170,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Small-24B-Instruct-2501"
+      }
+    },
+    "mistral-large-2407": {
+      "cleanName": "Mistral Large 2407",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-Large-Instruct-2411"
+      }
+    },
+    "qwen3-235b-a22b-2507": {
+      "cleanName": "Qwen3 235B A22B 2507",
+      "company": "Qwen",
+      "companyCountryCode": "CN",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-central-1": [
+              2.9e-07,
+              5.8e-07,
+              null,
+              null
+            ],
+            "ap-southeast-3": [
+              2.3e-07,
+              9.1e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              2.7e-07,
+              1.06e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              2.2e-07,
+              4.4e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              3.4000000000000003e-07,
+              1.37e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.2e-07,
+              8.8e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              1.45e-07,
+              1.16e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2.2e-07,
+              8.8e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              2.6e-07,
+              1.04e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "Qwen/Qwen3-235B-A22B"
+      }
+    },
+    "llama-4-maverick-17b": {
+      "cleanName": "Llama 4 Maverick 17B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-2": [
+              2.4000000000000003e-07,
+              9.7e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.4000000000000003e-07,
+              4.85e-07,
+              null,
+              null
+            ],
+            "us-west-1": [
+              2.4000000000000003e-07,
+              4.85e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              2.4000000000000003e-07,
+              4.85e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      }
+    },
+    "voxtral-mini-1-0": {
+      "cleanName": "Voxtral Mini 1.0",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-west-2": [
+              3.0000000000000004e-08,
+              3.0000000000000004e-08,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2e-08,
+              4e-08,
+              null,
+              null
+            ],
+            "us-east-1": [
+              2e-08,
+              4e-08,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2e-08,
+              4e-08,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              3.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              5.0000000000000004e-08,
+              5.0000000000000004e-08,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true
+    },
+    "llama-3-3-70b": {
+      "cleanName": "Llama 3.3 70B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              3.6000000000000005e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              3.6000000000000005e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3.6000000000000005e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 450,
+          "tokensPerSecond": 143,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.3-70B-Instruct"
+      }
+    },
+    "nvidia-nemotron-nano-3-30b": {
+      "cleanName": "Nemotron Nano 3 30B",
+      "company": "Nvidia",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              3.0000000000000004e-08,
+              2.4000000000000003e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              3.0000000000000004e-08,
+              1.2000000000000002e-07,
+              null,
+              null
+            ],
+            "eu-west-2": [
+              5.0000000000000004e-08,
+              3.7e-07,
+              null,
+              null
+            ],
+            "ap-northeast-1": [
+              3.0000000000000004e-08,
+              1.5e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              3.0000000000000004e-08,
+              1.3999999999999998e-07,
+              null,
+              null
+            ],
+            "eu-south-1": [
+              6.999999999999999e-08,
+              1.3999999999999998e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              6.000000000000001e-08,
+              2.4000000000000003e-07,
+              null,
+              null
+            ],
+            "sa-east-1": [
+              6.999999999999999e-08,
+              2.9e-07,
+              null,
+              null
+            ],
+            "ap-south-1": [
+              3.0000000000000004e-08,
+              1.3999999999999998e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true
+    },
+    "mistral-7b": {
+      "cleanName": "Mistral 7B",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Mistral-7B-Instruct-v0.3"
+      }
+    },
+    "llama-3-70b": {
+      "cleanName": "Llama 3 70B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-gov-west-1": [
+              2.65e-06,
+              3.5e-06,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.65e-06,
+              3.5e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              2.65e-06,
+              3.5e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "llama-3-1-8b": {
+      "cleanName": "Llama 3.1 8B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-2": [
+              1.1e-07,
+              1.1e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              2.2e-07,
+              2.2e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              2.2e-07,
+              1.1e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "llama-4-scout-17b": {
+      "cleanName": "Llama 4 Scout 17B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              8.500000000000001e-08,
+              3.3e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              8.500000000000001e-08,
+              6.6e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              8.500000000000001e-08,
+              6.6e-07,
+              null,
+              null
+            ],
+            "us-west-1": [
+              1.7000000000000001e-07,
+              3.3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 530,
+          "tokensPerSecond": 194,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-4-Scout-17B-16E-Instruct"
+      }
+    },
+    "llama-3-2-1b": {
+      "cleanName": "Llama 3.2 1B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "eu-central-1": [
+              6.5e-08,
+              1.3e-07,
+              null,
+              null
+            ],
+            "us-west-2": [
+              5.0000000000000004e-08,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.0000000000000001e-07,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.0000000000000001e-07,
+              1.0000000000000001e-07,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              1.1e-07,
+              1.1e-07,
+              null,
+              null
+            ],
+            "eu-west-3": [
+              1.3e-07,
+              1.3e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.2-3B-Instruct"
+      }
+    },
+    "llama-3-3-70b-custom": {
+      "cleanName": "Llama 3.3 70B Custom",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              7.200000000000001e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.3-70B-Instruct"
+      }
+    },
+    "llama-3-2-90b": {
+      "cleanName": "Llama 3.2 90B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              3.6000000000000005e-07,
+              3.6000000000000005e-07,
+              null,
+              null
+            ],
+            "us-east-2": [
+              7.200000000000001e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              7.200000000000001e-07,
+              7.200000000000001e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 450,
+          "tokensPerSecond": 51,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.2-3B-Instruct"
+      }
+    },
+    "llama-3-2-11b": {
+      "cleanName": "Llama 3.2 11B",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              1.6e-07,
+              0,
+              null,
+              null
+            ],
+            "us-east-2": [
+              1.6e-07,
+              1.6e-07,
+              null,
+              null
+            ],
+            "us-east-1": [
+              1.6e-07,
+              1.6e-07,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 370,
+          "tokensPerSecond": 142,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.2-3B-Instruct"
+      }
+    },
+    "llama-3-1-405b-latency-optimized": {
+      "cleanName": "Llama 3.1 405B Latency Optimized",
+      "company": "Meta",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-2": [
+              3e-06,
+              3e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "meta-llama/Llama-3.1-8B-Instruct"
+      }
+    },
+    "pixtral-large-25-02": {
+      "cleanName": "Pixtral Large 25.02",
+      "company": "Mistral",
+      "companyCountryCode": "FR",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-west-2": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "us-east-1": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "eu-west-1": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "eu-central-1": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "eu-west-3": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "eu-north-1": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ],
+            "us-east-2": [
+              2e-06,
+              6e-06,
+              null,
+              null
+            ]
+          },
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": true,
+      "tokenizer": {
+        "type": "transformers",
+        "pretrainedPath": "mistralai/Pixtral-Large-Instruct-2411"
+      }
+    },
+    "claude-instant": {
+      "cleanName": "Claude Instant",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": false,
+      "selfhostable": false
+    },
+    "claude-2-0": {
+      "cleanName": "Claude 2.0",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false
+    },
+    "claude-2-1": {
+      "cleanName": "Claude 2.1",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false
+    },
+    "claude-3-sonnet": {
+      "cleanName": "Claude 3 Sonnet",
+      "company": "Anthropic",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {},
+          "latencyMs": 0,
+          "tokensPerSecond": 0,
+          "lowCapacity": false
+        }
+      ],
+      "reasoning": true,
+      "selfhostable": false
+    }
+  },
+  "imageModels": {
+    "stable-diffusion-xl-1-0": {
+      "cleanName": "Stable Diffusion XL 1.0",
+      "company": "Stability AI",
+      "companyCountryCode": "GB",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "512x512",
+                "pricePerImage": 0.018
+              },
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.036
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "512x512",
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    },
+    "dall-e-3": {
+      "cleanName": "DALL-E 3",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.04,
+                "generationSpeedMs": 15000
+              },
+              {
+                "resolution": "1024x1792",
+                "pricePerImage": 0.08,
+                "generationSpeedMs": 20000
+              },
+              {
+                "resolution": "1792x1024",
+                "pricePerImage": 0.08,
+                "generationSpeedMs": 20000
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024",
+        "1024x1792",
+        "1792x1024"
+      ],
+      "supportsNegativePrompts": false
+    },
+    "stable-diffusion-3-large": {
+      "cleanName": "Stable Diffusion 3 Large",
+      "company": "Stability AI",
+      "companyCountryCode": "GB",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.08
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    },
+    "dall-e-3-hd": {
+      "cleanName": "DALL-E 3 HD",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.08,
+                "generationSpeedMs": 25000
+              },
+              {
+                "resolution": "1024x1792",
+                "pricePerImage": 0.12,
+                "generationSpeedMs": 30000
+              },
+              {
+                "resolution": "1792x1024",
+                "pricePerImage": 0.12,
+                "generationSpeedMs": 30000
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024",
+        "1024x1792",
+        "1792x1024"
+      ],
+      "supportsNegativePrompts": false
+    },
+    "stable-image-ultra": {
+      "cleanName": "Stable Image Ultra",
+      "company": "Stability AI",
+      "companyCountryCode": "GB",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.14
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    },
+    "dall-e-2": {
+      "cleanName": "DALL-E 2",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              {
+                "resolution": "256x256",
+                "pricePerImage": 0.016
+              },
+              {
+                "resolution": "512x512",
+                "pricePerImage": 0.018
+              },
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.02
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "256x256",
+        "512x512",
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": false
+    },
+    "stable-image-core": {
+      "cleanName": "Stable Image Core",
+      "company": "Stability AI",
+      "companyCountryCode": "GB",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.04
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    },
+    "gpt-image-1": {
+      "cleanName": "GPT Image 1",
+      "company": "OpenAI",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "openai",
+          "regionPricing": {
+            "global": [
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.011
+              },
+              {
+                "resolution": "1024x1792",
+                "pricePerImage": 0.016
+              },
+              {
+                "resolution": "1792x1024",
+                "pricePerImage": 0.016
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "1024x1024",
+        "1024x1792",
+        "1792x1024"
+      ],
+      "supportsNegativePrompts": false
+    },
+    "amazon-titan-image-generator": {
+      "cleanName": "Amazon Titan Image Generator",
+      "company": "Amazon",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "512x512",
+                "pricePerImage": 0.008
+              },
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.01
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "512x512",
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    },
+    "amazon-titan-image-generator-v2": {
+      "cleanName": "Amazon Titan Image Generator v2",
+      "company": "Amazon",
+      "companyCountryCode": "US",
+      "vendors": [
+        {
+          "vendorRef": "aws",
+          "regionPricing": {
+            "us-east-1": [
+              {
+                "resolution": "512x512",
+                "pricePerImage": 0.008
+              },
+              {
+                "resolution": "1024x1024",
+                "pricePerImage": 0.01
+              }
+            ]
+          },
+          "latencyMs": 0,
+          "lowCapacity": false
+        }
+      ],
+      "selfhostable": false,
+      "supportedResolutions": [
+        "512x512",
+        "1024x1024"
+      ],
+      "supportsNegativePrompts": true
+    }
+  }
+}

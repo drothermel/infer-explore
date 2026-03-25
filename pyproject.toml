@@ -1,0 +1,27 @@
+[project]
+name = "infer-explore"
+version = "0.1.0"
+description = "Fetch and compare LLM model data from multiple sources (Artificial Analysis, Vantage, HuggingFace)"
+readme = "README.md"
+authors = [
+    { name = "Danielle Rothermel", email = "danielle.rothermel@gmail.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.28",
+    "python-dotenv>=1.0",
+    "pandas>=2.0",
+    "pyarrow>=14.0",
+    "fsspec>=2023.6",
+    "huggingface-hub>=0.20",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.1,<0.12.0"]
+build-backend = "uv_build"
+
+[project.scripts]
+fetch-aa = "infer_explore.cli:fetch_aa"
+fetch-vantage = "infer_explore.cli:fetch_vantage"
+fetch-hf = "infer_explore.cli:fetch_hf"
+fetch-all = "infer_explore.cli:fetch_all"
