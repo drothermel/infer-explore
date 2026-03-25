@@ -1,8 +1,8 @@
 """Merge all data sources into a unified model dataset.
 
 Loads Artificial Analysis, HuggingFace, Vantage, and Bifrost JSON files,
-normalizes names, fuzzy-matches models across sources, and produces a
-single unified JSON/CSV.
+extracts model identities, groups by model_id, and produces a single
+unified JSON/CSV with deduplication.
 """
 
 import json
@@ -12,9 +12,14 @@ from collections import defaultdict
 from pathlib import Path
 
 from infer_explore.helpers import get_data_dir, save_csv, save_json
+from infer_explore.sources.model_id import (
+    ModelIdentity,
+    extract_identity,
+    _normalize_company,
+)
 
 # ---------------------------------------------------------------------------
-# Company normalization
+# Company normalization (kept for backward compat; delegates to model_id)
 # ---------------------------------------------------------------------------
 
 _COMPANY_MAP = {
@@ -65,14 +70,14 @@ _COMPANY_MAP = {
 }
 
 
-def _normalize_company(raw: str) -> str:
+def _norm_company(raw: str) -> str:
     """Normalize company/provider name to canonical form."""
     key = raw.strip().lower().replace(" ", "")
     return _COMPANY_MAP.get(key, key)
 
 
 # ---------------------------------------------------------------------------
-# Model name normalization
+# Model name normalization (kept for HF matching fallback)
 # ---------------------------------------------------------------------------
 
 _STRIP_SUFFIXES_RE = re.compile(
@@ -292,117 +297,7 @@ def _vantage_vendor_pricing(model: dict, vendors_meta: dict) -> list[dict]:
 
 
 # ---------------------------------------------------------------------------
-# Building normalized index for matching
-# ---------------------------------------------------------------------------
-
-
-def _build_aa_index(models: list[dict]) -> dict[str, dict]:
-    """Build a normalized-name -> AA model index."""
-    idx: dict[str, dict] = {}
-    for m in models:
-        slug = m.get("slug", "")
-        name = m.get("name", "")
-        creator = _normalize_company(
-            (m.get("model_creator") or {}).get("name", "")
-        )
-        norm = _normalize_model_name(slug or name)
-        key = f"{creator}/{norm}"
-        # Prefer models with evaluations
-        if key not in idx or (
-            m.get("evaluations") and not idx[key].get("evaluations")
-        ):
-            idx[key] = m
-    return idx
-
-
-def _build_hf_index(models: list[dict]) -> dict[str, dict]:
-    """Build a normalized-name -> HF model index."""
-    idx: dict[str, dict] = {}
-    for m in models:
-        model_name = m.get("model_name", "")
-        provider = _normalize_company(m.get("provider", ""))
-        # model_name is like "meta-llama/Llama-3.1-405B"
-        norm = _normalize_model_name(model_name)
-        key = f"{provider}/{norm}"
-        idx[key] = m
-    return idx
-
-
-def _build_vantage_index(
-    models: dict[str, dict],
-) -> dict[str, tuple[str, dict]]:
-    """Build a normalized-name -> (vantage_key, model) index."""
-    idx: dict[str, tuple[str, dict]] = {}
-    for vkey, m in models.items():
-        company = _normalize_company(m.get("company", ""))
-        norm = _normalize_model_name(vkey)
-        key = f"{company}/{norm}"
-        idx[key] = (vkey, m)
-    return idx
-
-
-def _build_bifrost_index(
-    agg: dict[str, dict],
-) -> dict[str, tuple[str, dict]]:
-    """Build a normalized-name -> (base_model, aggregated_entry) index."""
-    idx: dict[str, tuple[str, dict]] = {}
-    for bm, entry in agg.items():
-        provider = _normalize_company(entry.get("provider", ""))
-        norm = _normalize_model_name(bm)
-        # Index by multiple possible keys
-        for company in [provider, norm.split("-")[0] if "-" in norm else provider]:
-            comp = _normalize_company(company)
-            key = f"{comp}/{norm}"
-            if key not in idx:
-                idx[key] = (bm, entry)
-        # Also index by just the normalized name (no company prefix)
-        idx[f"_any_/{norm}"] = (bm, entry)
-    return idx
-
-
-# ---------------------------------------------------------------------------
-# Matching
-# ---------------------------------------------------------------------------
-
-
-def _try_match_name(
-    norm_key: str,
-    norm_name: str,
-    company: str,
-    index: dict,
-    any_prefix: bool = False,
-) -> str | None:
-    """Try to match a normalized key against an index.
-    Returns the index key if found, else None.
-    """
-    # Exact match
-    if norm_key in index:
-        return norm_key
-
-    # Try with _any_ prefix for cross-company matching
-    if any_prefix:
-        any_key = f"_any_/{norm_name}"
-        if any_key in index:
-            return any_key
-
-    # Try substring matching: check if any index key contains our name or vice versa
-    for idx_key in index:
-        idx_name = idx_key.split("/", 1)[-1] if "/" in idx_key else idx_key
-        idx_company = idx_key.split("/", 1)[0] if "/" in idx_key else ""
-
-        # Company must match for substring matching
-        if idx_company != company and idx_company != "_any_":
-            continue
-
-        if len(norm_name) >= 4 and len(idx_name) >= 4:
-            if norm_name in idx_name or idx_name in norm_name:
-                return idx_key
-
-    return None
-
-
-# ---------------------------------------------------------------------------
-# Building unified model records
+# Benchmark extraction helpers
 # ---------------------------------------------------------------------------
 
 
@@ -484,199 +379,169 @@ def _make_slug(name: str, creator: str) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Main merge logic
+# Source record wrappers — extract identity + data for each source record
 # ---------------------------------------------------------------------------
 
 
-def merge() -> list[dict]:
-    """Load all sources, match, and produce unified model list."""
-    data_dir = get_data_dir()
+def _process_aa_records(models: list[dict]) -> list[dict]:
+    """Process AA models: extract identity and attach source data."""
+    records = []
+    for m in models:
+        slug = m.get("slug", "")
+        name = m.get("name", "")
+        creator_raw = (m.get("model_creator") or {}).get("name", "")
+        creator = _norm_company(creator_raw)
 
-    print("Loading data sources...")
-    aa_models = _load_aa(data_dir)
-    hf_models = _load_hf(data_dir)
-    vantage_models = _load_vantage(data_dir)
-    bifrost_raw = _load_bifrost(data_dir)
+        identity = extract_identity(name or slug, creator=creator_raw, source="aa")
 
-    # Load vantage vendor metadata for pricing extraction
-    vantage_path = data_dir / "vantage_models.json"
-    vendors_meta = {}
-    if vantage_path.exists():
-        vdata = _load_json(vantage_path)
-        vendors_meta = vdata.get("vendors", {})
-
-    print(f"  AA: {len(aa_models)}, HF: {len(hf_models)}, "
-          f"Vantage: {len(vantage_models)}, Bifrost: {len(bifrost_raw)}")
-
-    # Aggregate Bifrost by base_model
-    print("Aggregating Bifrost entries by base_model...")
-    bifrost_agg = _aggregate_bifrost(bifrost_raw)
-    print(f"  {len(bifrost_raw)} entries → {len(bifrost_agg)} unique base models")
-
-    # Build indexes
-    print("Building match indexes...")
-    aa_idx = _build_aa_index(aa_models)
-    hf_idx = _build_hf_index(hf_models)
-    vn_idx = _build_vantage_index(vantage_models)
-    bf_idx = _build_bifrost_index(bifrost_agg)
-
-    # Track which entries from each source have been matched
-    matched_hf = set()
-    matched_vn = set()
-    matched_bf = set()
-
-    unified = []
-
-    # Start from AA (richest data), then add unmatched from other sources
-    print("Matching models across sources...")
-
-    for aa_key, aa in aa_idx.items():
-        company = aa_key.split("/")[0]
-        norm_name = aa_key.split("/", 1)[1]
-
-        sources = ["aa"]
-        hf_data = None
-        vn_data = None
-        bf_data = None
-
-        # Try to match HF
-        hf_match = _try_match_name(aa_key, norm_name, company, hf_idx, any_prefix=True)
-        if hf_match:
-            hf_data = hf_idx[hf_match]
-            matched_hf.add(hf_match)
-            sources.append("hf")
-
-        # Try to match Vantage
-        vn_match = _try_match_name(aa_key, norm_name, company, vn_idx, any_prefix=True)
-        if vn_match:
-            _, vn_data = vn_idx[vn_match]
-            matched_vn.add(vn_match)
-            sources.append("vantage")
-
-        # Try to match Bifrost
-        bf_match = _try_match_name(aa_key, norm_name, company, bf_idx, any_prefix=True)
-        if bf_match:
-            _, bf_data = bf_idx[bf_match]
-            matched_bf.add(bf_match)
-            sources.append("bifrost")
-
-        record = _build_record(aa, hf_data, vn_data, bf_data, sources, vendors_meta)
-        unified.append(record)
-
-    # Add unmatched Vantage models
-    for vn_key, (vantage_slug, vn_model) in vn_idx.items():
-        if vn_key in matched_vn:
-            continue
-        company = vn_key.split("/")[0]
-        norm_name = vn_key.split("/", 1)[1]
-        sources = ["vantage"]
-
-        hf_data = None
-        bf_data = None
-
-        hf_match = _try_match_name(vn_key, norm_name, company, hf_idx, any_prefix=True)
-        if hf_match and hf_match not in matched_hf:
-            hf_data = hf_idx[hf_match]
-            matched_hf.add(hf_match)
-            sources.append("hf")
-
-        bf_match = _try_match_name(vn_key, norm_name, company, bf_idx, any_prefix=True)
-        if bf_match and bf_match not in matched_bf:
-            _, bf_data = bf_idx[bf_match]
-            matched_bf.add(bf_match)
-            sources.append("bifrost")
-
-        record = _build_record(None, hf_data, vn_model, bf_data, sources, vendors_meta)
-        unified.append(record)
-
-    # Add unmatched Bifrost models
-    for bf_key, (base_model, bf_entry) in bf_idx.items():
-        if bf_key in matched_bf or bf_key.startswith("_any_/"):
-            continue
-        company = bf_key.split("/")[0]
-        norm_name = bf_key.split("/", 1)[1]
-        sources = ["bifrost"]
-
-        hf_data = None
-        hf_match = _try_match_name(bf_key, norm_name, company, hf_idx, any_prefix=True)
-        if hf_match and hf_match not in matched_hf:
-            hf_data = hf_idx[hf_match]
-            matched_hf.add(hf_match)
-            sources.append("hf")
-
-        record = _build_record(None, hf_data, None, bf_entry, sources, vendors_meta)
-        unified.append(record)
-
-    # Add unmatched HF models
-    for hf_key, hf_model in hf_idx.items():
-        if hf_key in matched_hf:
-            continue
-        record = _build_record(None, hf_model, None, None, ["hf"], vendors_meta)
-        unified.append(record)
-
-    # Deduplicate by id
-    seen_ids = {}
-    deduped = []
-    for record in unified:
-        rid = record["id"]
-        if rid in seen_ids:
-            # Merge sources
-            existing = seen_ids[rid]
-            for s in record["sources"]:
-                if s not in existing["sources"]:
-                    existing["sources"].append(s)
-            continue
-        seen_ids[rid] = record
-        deduped.append(record)
-
-    # Sort by name
-    deduped.sort(key=lambda r: r["name"].lower())
-
-    print(f"\nMerge complete: {len(deduped)} unified models")
-    src_counts = defaultdict(int)
-    for r in deduped:
-        for s in r["sources"]:
-            src_counts[s] += 1
-    for src, count in sorted(src_counts.items()):
-        print(f"  With {src}: {count}")
-    multi = sum(1 for r in deduped if len(r["sources"]) > 1)
-    print(f"  Multi-source matches: {multi}")
-
-    return deduped
+        records.append({
+            "_identity": identity,
+            "_source": "aa",
+            "_name": name,
+            "_raw": m,
+        })
+    return records
 
 
-def _build_record(
-    aa: dict | None,
-    hf: dict | None,
-    vn: dict | None,
-    bf: dict | None,
-    sources: list[str],
+def _process_hf_records(models: list[dict]) -> list[dict]:
+    """Process HF models: extract identity and attach source data."""
+    records = []
+    for m in models:
+        model_name = m.get("model_name", "")
+        provider = _norm_company(m.get("provider", ""))
+
+        identity = extract_identity(model_name, creator=provider, source="hf")
+
+        records.append({
+            "_identity": identity,
+            "_source": "hf",
+            "_name": model_name,
+            "_raw": m,
+        })
+    return records
+
+
+def _process_vantage_records(models: dict[str, dict]) -> list[dict]:
+    """Process Vantage models: extract identity and attach source data."""
+    records = []
+    for vkey, m in models.items():
+        clean_name = m.get("cleanName", vkey)
+        company = _norm_company(m.get("company", ""))
+
+        identity = extract_identity(clean_name, creator=company, source="vantage")
+
+        records.append({
+            "_identity": identity,
+            "_source": "vantage",
+            "_name": clean_name,
+            "_vantage_key": vkey,
+            "_raw": m,
+        })
+    return records
+
+
+def _process_bifrost_records(agg: dict[str, dict]) -> list[dict]:
+    """Process aggregated Bifrost models: extract identity and attach source data.
+
+    For Bifrost, the provider field refers to the *hosting* provider (e.g.
+    gradient_ai, databricks), NOT the model creator (e.g. anthropic). We let
+    the family detector infer the creator from the base_model name instead.
+    """
+    records = []
+    for bm, entry in agg.items():
+        # Use base_model as the primary name input (well-normalized)
+        base_model = entry.get("_base_model", bm)
+
+        # Don't pass the hosting provider as creator — let the family detector
+        # infer the actual model creator from the name
+        identity = extract_identity(base_model, creator="", source="bifrost")
+
+        records.append({
+            "_identity": identity,
+            "_source": "bifrost",
+            "_name": base_model,
+            "_base_model": base_model,
+            "_raw": entry,
+        })
+    return records
+
+
+# ---------------------------------------------------------------------------
+# Grouping and aggregation
+# ---------------------------------------------------------------------------
+
+
+def _group_by_model_id(all_records: list[dict]) -> dict[str, list[dict]]:
+    """Group all source records by their extracted model_id."""
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for rec in all_records:
+        mid = rec["_identity"].model_id
+        if mid:
+            groups[mid].append(rec)
+        else:
+            # Fallback: use a slug-based ID
+            fallback = _make_slug(rec["_name"], rec["_identity"].creator)
+            groups[fallback].append(rec)
+    return groups
+
+
+def _build_unified_record(
+    model_id: str,
+    group: list[dict],
     vendors_meta: dict,
 ) -> dict:
-    """Build a unified model record from matched source data."""
-    # Best name: AA > Vantage > HF > Bifrost
+    """Build a single unified record from a group of source records sharing a model_id.
+
+    Aggregates pricing, benchmarks, capabilities, and configs from all sources.
+    """
+    identity = group[0]["_identity"]
+
+    # Collect per-source data
+    aa_records = [r for r in group if r["_source"] == "aa"]
+    hf_records = [r for r in group if r["_source"] == "hf"]
+    vn_records = [r for r in group if r["_source"] == "vantage"]
+    bf_records = [r for r in group if r["_source"] == "bifrost"]
+
+    # Pick best data source for each field
+    aa = aa_records[0]["_raw"] if aa_records else None
+    hf = hf_records[0]["_raw"] if hf_records else None
+    vn = vn_records[0]["_raw"] if vn_records else None
+    bf = bf_records[0]["_raw"] if bf_records else None
+
+    # Sources present
+    sources = []
+    if aa_records:
+        sources.append("aa")
+    if hf_records:
+        sources.append("hf")
+    if vn_records:
+        sources.append("vantage")
+    if bf_records:
+        sources.append("bifrost")
+
+    # Best display name: AA > Vantage > identity.display_name > Bifrost
     name = ""
     if aa:
         name = aa.get("name", "")
     if not name and vn:
         name = vn.get("cleanName", "")
-    if not name and hf:
-        name = hf.get("model_name", "")
+    if not name:
+        name = identity.display_name
     if not name and bf:
         name = bf.get("_base_model", "")
 
     # Creator
-    creator = ""
-    if aa:
-        creator = _normalize_company(
+    creator = identity.creator
+    if not creator and aa:
+        creator = _norm_company(
             (aa.get("model_creator") or {}).get("name", "")
         )
     if not creator and vn:
-        creator = _normalize_company(vn.get("company", ""))
+        creator = _norm_company(vn.get("company", ""))
     if not creator and hf:
-        creator = _normalize_company(hf.get("provider", ""))
+        creator = _norm_company(hf.get("provider", ""))
     if not creator and bf:
-        creator = _normalize_company(bf.get("provider", ""))
+        creator = _norm_company(bf.get("provider", ""))
 
     # Pricing: prefer AA
     pricing = (aa.get("pricing") or {}) if aa else {}
@@ -703,8 +568,18 @@ def _build_record(
         if cw:
             cache_write = cw * 1_000_000
 
-    # Provider pricing from Bifrost
-    provider_pricing = bf.get("_provider_pricing", []) if bf else []
+    # Provider pricing: union from all Bifrost records in this group
+    provider_pricing = []
+    seen_pp_keys = set()
+    for rec in bf_records:
+        for pp in rec["_raw"].get("_provider_pricing", []):
+            pp_key = pp.get("key", "")
+            if pp_key not in seen_pp_keys:
+                provider_pricing.append(pp)
+                seen_pp_keys.add(pp_key)
+    provider_pricing.sort(
+        key=lambda p: (p.get("input_price_per_1m") or float("inf"))
+    )
 
     # Compute price ranges from provider pricing
     paid_pp = [p for p in provider_pricing
@@ -732,24 +607,36 @@ def _build_record(
     # Vendor pricing from Vantage
     vendor_pricing = _vantage_vendor_pricing(vn, vendors_meta) if vn else []
 
-    # Context window / token limits
+    # Context window / token limits — take max across all sources
     context_window = None
     max_output = None
-    if bf:
-        context_window = bf.get("max_input_tokens")
-        max_output = bf.get("max_output_tokens")
-    if not context_window and vn:
-        context_window = vn.get("maxInputTokens")
-    if not max_output and vn:
-        max_output = vn.get("maxOutputTokens")
+    for rec in group:
+        raw = rec["_raw"]
+        if rec["_source"] == "bifrost":
+            cw = raw.get("max_input_tokens")
+            mo = raw.get("max_output_tokens")
+        elif rec["_source"] == "vantage":
+            cw = raw.get("maxInputTokens")
+            mo = raw.get("maxOutputTokens")
+        else:
+            cw = None
+            mo = None
+        if cw and (context_window is None or cw > context_window):
+            context_window = cw
+        if mo and (max_output is None or mo > max_output):
+            max_output = mo
 
-    # Benchmarks
-    aa_bench = _extract_aa_benchmarks(aa) if aa else {}
-    hf_bench = _extract_hf_benchmarks(hf) if hf else {}
-    vn_bench = _extract_vantage_benchmarks(vn) if vn else {}
-    benchmarks = _merge_benchmarks(aa_bench, hf_bench, vn_bench)
+    # Benchmarks: merge across all sources, preferring non-None
+    all_benchmarks = []
+    for rec in aa_records:
+        all_benchmarks.append(_extract_aa_benchmarks(rec["_raw"]))
+    for rec in hf_records:
+        all_benchmarks.append(_extract_hf_benchmarks(rec["_raw"]))
+    for rec in vn_records:
+        all_benchmarks.append(_extract_vantage_benchmarks(rec["_raw"]))
+    benchmarks = _merge_benchmarks(*all_benchmarks)
 
-    # Capability flags
+    # Capability flags — union across all Bifrost records (True wins)
     supports_vision = None
     supports_function_calling = None
     supports_web_search = None
@@ -762,29 +649,118 @@ def _build_record(
     supports_reasoning = None
     supported_modalities = None
 
-    if bf:
-        supports_vision = bf.get("supports_vision")
-        supports_function_calling = bf.get("supports_function_calling")
-        supports_web_search = bf.get("supports_web_search")
-        supports_pdf_input = bf.get("supports_pdf_input")
-        supports_audio_input = bf.get("supports_audio_input")
-        supports_audio_output = bf.get("supports_audio_output")
-        supports_video_input = bf.get("supports_video_input")
-        supports_prompt_caching = bf.get("supports_prompt_caching")
-        supports_computer_use = bf.get("supports_computer_use")
-        supports_reasoning = bf.get("supports_reasoning")
-        mods = bf.get("supported_modalities")
-        if isinstance(mods, list):
+    for rec in bf_records:
+        raw = rec["_raw"]
+        for field, current in [
+            ("supports_vision", supports_vision),
+            ("supports_function_calling", supports_function_calling),
+            ("supports_web_search", supports_web_search),
+            ("supports_pdf_input", supports_pdf_input),
+            ("supports_audio_input", supports_audio_input),
+            ("supports_audio_output", supports_audio_output),
+            ("supports_video_input", supports_video_input),
+            ("supports_prompt_caching", supports_prompt_caching),
+            ("supports_computer_use", supports_computer_use),
+            ("supports_reasoning", supports_reasoning),
+        ]:
+            val = raw.get(field)
+            if val is True:
+                locals()[field.replace("supports_", "supports_")] = True  # noqa
+
+    # Re-read after loop since locals() trick doesn't work well
+    for rec in bf_records:
+        raw = rec["_raw"]
+        if raw.get("supports_vision"):
+            supports_vision = True
+        if raw.get("supports_function_calling"):
+            supports_function_calling = True
+        if raw.get("supports_web_search"):
+            supports_web_search = True
+        if raw.get("supports_pdf_input"):
+            supports_pdf_input = True
+        if raw.get("supports_audio_input"):
+            supports_audio_input = True
+        if raw.get("supports_audio_output"):
+            supports_audio_output = True
+        if raw.get("supports_video_input"):
+            supports_video_input = True
+        if raw.get("supports_prompt_caching"):
+            supports_prompt_caching = True
+        if raw.get("supports_computer_use"):
+            supports_computer_use = True
+        if raw.get("supports_reasoning"):
+            supports_reasoning = True
+        mods = raw.get("supported_modalities")
+        if isinstance(mods, list) and supported_modalities is None:
             supported_modalities = mods
 
     reasoning = supports_reasoning
     if reasoning is None and vn:
         reasoning = vn.get("reasoning")
 
+    # Build configurations list from records that have config-level data
+    configurations = []
+    seen_configs = set()
+    for rec in group:
+        ident = rec["_identity"]
+        cid = ident.config_id
+        if cid in seen_configs:
+            continue
+        seen_configs.add(cid)
+
+        config_entry = {
+            "config_id": cid,
+            "reasoning_mode": ident.reasoning_mode,
+            "effort_level": ident.effort_level,
+            "source_names": [rec["_name"]],
+        }
+
+        # Add config-specific benchmarks if from AA
+        if rec["_source"] == "aa":
+            config_entry["benchmarks"] = _extract_aa_benchmarks(rec["_raw"])
+        elif rec["_source"] == "hf":
+            config_entry["benchmarks"] = _extract_hf_benchmarks(rec["_raw"])
+
+        configurations.append(config_entry)
+
+    # Merge source_names for configs with same config_id
+    # (already handled by seen_configs above, but add extra names)
+    config_name_map = {c["config_id"]: c for c in configurations}
+    for rec in group:
+        cid = rec["_identity"].config_id
+        if cid in config_name_map:
+            if rec["_name"] not in config_name_map[cid]["source_names"]:
+                config_name_map[cid]["source_names"].append(rec["_name"])
+
+    # Collect all aliases
+    aliases = []
+    for rec in group:
+        if rec["_name"] not in aliases:
+            aliases.append(rec["_name"])
+
+    # Num providers: sum across all bifrost records
+    num_providers = sum(
+        rec["_raw"].get("_num_providers", 0) for rec in bf_records
+    )
+
+    # For display name, strip reasoning/effort qualifiers from the best AA name
+    display_name = name
+    if "(" in display_name:
+        # Try stripping the parenthesized qualifier to keep AA's casing
+        cleaned = re.sub(r"\s*\([^)]*\)\s*", "", display_name).strip()
+        if cleaned:
+            display_name = cleaned
+        else:
+            display_name = identity.display_name or display_name
+
     record = {
-        "id": _make_slug(name, creator),
-        "name": name,
+        "id": model_id,
+        "model_id": model_id,
+        "name": display_name,
         "creator": creator,
+        "family": identity.family,
+        "variant": identity.variant,
+        "version": identity.version,
         "creator_country": vn.get("companyCountryCode") if vn else None,
         "release_date": (aa.get("release_date") if aa else None)
             or (vn.get("releaseDate") if vn else None),
@@ -848,10 +824,90 @@ def _build_record(
         "hf_coverage_count": hf.get("coverage_count") if hf else None,
 
         "sources": sources,
-        "num_providers": bf.get("_num_providers", 0) if bf else 0,
+        "num_providers": num_providers,
         "deprecation_date": bf.get("deprecation_date") if bf else None,
+
+        # New fields
+        "configurations": configurations,
+        "num_configurations": len(configurations),
+        "aliases": aliases,
     }
     return record
+
+
+# ---------------------------------------------------------------------------
+# Main merge logic
+# ---------------------------------------------------------------------------
+
+
+def merge() -> list[dict]:
+    """Load all sources, extract identities, group by model_id, and produce
+    unified model list.
+    """
+    data_dir = get_data_dir()
+
+    print("Loading data sources...")
+    aa_models = _load_aa(data_dir)
+    hf_models = _load_hf(data_dir)
+    vantage_models = _load_vantage(data_dir)
+    bifrost_raw = _load_bifrost(data_dir)
+
+    # Load vantage vendor metadata for pricing extraction
+    vantage_path = data_dir / "vantage_models.json"
+    vendors_meta = {}
+    if vantage_path.exists():
+        vdata = _load_json(vantage_path)
+        vendors_meta = vdata.get("vendors", {})
+
+    print(f"  AA: {len(aa_models)}, HF: {len(hf_models)}, "
+          f"Vantage: {len(vantage_models)}, Bifrost: {len(bifrost_raw)}")
+
+    # Aggregate Bifrost by base_model
+    print("Aggregating Bifrost entries by base_model...")
+    bifrost_agg = _aggregate_bifrost(bifrost_raw)
+    print(f"  {len(bifrost_raw)} entries → {len(bifrost_agg)} unique base models")
+
+    # Process each source: extract identities
+    print("Extracting model identities...")
+    all_records = []
+    all_records.extend(_process_aa_records(aa_models))
+    all_records.extend(_process_hf_records(hf_models))
+    all_records.extend(_process_vantage_records(vantage_models))
+    all_records.extend(_process_bifrost_records(bifrost_agg))
+
+    print(f"  Total source records: {len(all_records)}")
+
+    # Group by model_id
+    print("Grouping by model_id...")
+    groups = _group_by_model_id(all_records)
+    print(f"  {len(all_records)} records → {len(groups)} unique model_ids")
+
+    # Build unified records
+    print("Building unified records...")
+    unified = []
+    for model_id, group in groups.items():
+        record = _build_unified_record(model_id, group, vendors_meta)
+        unified.append(record)
+
+    # Sort by name
+    unified.sort(key=lambda r: r["name"].lower())
+
+    print(f"\nMerge complete: {len(unified)} unified models")
+    src_counts = defaultdict(int)
+    for r in unified:
+        for s in r["sources"]:
+            src_counts[s] += 1
+    for src, count in sorted(src_counts.items()):
+        print(f"  With {src}: {count}")
+    multi = sum(1 for r in unified if len(r["sources"]) > 1)
+    print(f"  Multi-source matches: {multi}")
+
+    # Stats on dedup
+    config_counts = [r["num_configurations"] for r in unified]
+    multi_config = sum(1 for c in config_counts if c > 1)
+    print(f"  Models with multiple configs: {multi_config}")
+
+    return unified
 
 
 # ---------------------------------------------------------------------------
@@ -859,7 +915,8 @@ def _build_record(
 # ---------------------------------------------------------------------------
 
 CSV_FIELDS = [
-    "id", "name", "creator", "creator_country", "release_date",
+    "id", "model_id", "name", "creator", "family", "variant", "version",
+    "creator_country", "release_date",
     "model_type", "parameters_billions", "context_window", "max_output_tokens",
     "reasoning", "reasoning_tier", "selfhostable",
     "input_price_per_1m", "output_price_per_1m", "blended_price_per_1m",
@@ -871,7 +928,7 @@ CSV_FIELDS = [
     "output_tokens_per_sec", "time_to_first_token_s",
     "supports_vision", "supports_function_calling", "supports_web_search",
     "supports_prompt_caching", "supports_pdf_input",
-    "num_providers", "sources",
+    "num_providers", "num_configurations", "sources",
     "hf_aggregate_score",
 ]
 

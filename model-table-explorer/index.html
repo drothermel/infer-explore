@@ -427,6 +427,91 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
   border-top: 1px solid var(--color-border);
 }
 
+/* Configurations section */
+.config-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.config-card {
+  background: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  min-width: 220px;
+  flex: 1;
+  max-width: 360px;
+}
+.config-card.config-base {
+  border-color: var(--color-primary);
+  border-width: 1px;
+}
+.config-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.config-label {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--color-text);
+}
+.config-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.3px;
+}
+.tag-reasoning { background: #a78bfa; color: #111; }
+.tag-non-reasoning { background: var(--color-text-dim); color: #111; }
+.tag-adaptive { background: var(--color-accent); color: #111; }
+.tag-effort { background: var(--color-primary); color: #111; }
+.config-benchmarks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 10px;
+  font-size: 11px;
+  margin-top: 4px;
+}
+.config-benchmarks .cb-label { color: var(--color-text-muted); font-size: 10px; }
+.config-benchmarks .cb-val { font-family: var(--font-mono); font-size: 10px; }
+
+/* Aliases list */
+.alias-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.alias-tag {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-family: var(--font-mono);
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* Config count badge in table */
+.config-count {
+  display: inline-block;
+  background: var(--color-surface-3);
+  color: var(--color-text-muted);
+  font-size: 9px;
+  font-family: var(--font-mono);
+  padding: 1px 4px;
+  border-radius: 3px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
 /* Loading */
 .loading {
   text-align: center;
@@ -475,7 +560,7 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
   </div>
 
   <div class="controls" id="controls">
-    <input type="text" class="search-box" id="search" placeholder="Search models or creators...">
+    <input type="text" class="search-box" id="search" placeholder="Search models, creators, or aliases...">
     <div class="filter-group">
       <label>Reasoning:</label>
       <select class="filter-select" id="reasoning-filter">
@@ -488,6 +573,7 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
     </div>
     <label class="filter-checkbox"><input type="checkbox" id="open-only"> Open-weight only</label>
     <label class="filter-checkbox"><input type="checkbox" id="has-free-tier"> Has free tier</label>
+    <label class="filter-checkbox"><input type="checkbox" id="has-configs"> Has configurations</label>
     <div class="price-slider-group">
       <label>Max input $/1M:</label>
       <input type="range" class="price-slider" id="price-slider" min="0" max="100" value="100" step="1">
@@ -530,6 +616,7 @@ const COL_GROUPS = {
   Identity: [
     {key:'name', label:'Model', fmt:'name'},
     {key:'creator', label:'Creator', fmt:'creator'},
+    {key:'num_configurations', label:'Cfgs', fmt:'configs'},
     {key:'release_date', label:'Released', fmt:'text'},
     {key:'model_type', label:'Type', fmt:'text'},
   ],
@@ -605,6 +692,9 @@ function fmtVal(val, fmt) {
     case 'pct': return {html:(Number(val)*100).toFixed(1)+'%', cls:'', raw:val};
     case 'bench': return {html:Number(val).toFixed(1), cls:'', raw:val};
     case 'tokens': return {html:fmtTokens(val), cls:'', raw:val};
+    case 'configs':
+      if (val <= 1) return {html:'<span class="null-val">1</span>', cls:'', raw:val};
+      return {html:'<span class="config-count" style="background:var(--color-surface-3);color:var(--color-primary);font-weight:600">'+val+'</span>', cls:'', raw:val};
     case 'bool':
       if (val === true) return {html:'\u2713', cls:'bool-true', raw:1};
       return {html:'\u2715', cls:'bool-false', raw:0};
@@ -686,12 +776,20 @@ function getFiltered() {
   const reasoningFilter = document.getElementById('reasoning-filter').value;
   const openOnly = document.getElementById('open-only').checked;
   const hasFreeTier = document.getElementById('has-free-tier').checked;
+  const hasConfigs = document.getElementById('has-configs').checked;
   const maxPrice = parseInt(document.getElementById('price-slider').value);
   const priceLimit = maxPrice >= 100 ? Infinity : maxPrice;
 
   return allModels.filter(m => {
-    // Text search
-    if (q && !m.name.toLowerCase().includes(q) && !m.creator.toLowerCase().includes(q)) return false;
+    // Text search — matches name, creator, model_id, family, and aliases
+    if (q) {
+      const nameMatch = m.name.toLowerCase().includes(q);
+      const creatorMatch = m.creator.toLowerCase().includes(q);
+      const idMatch = (m.model_id||'').toLowerCase().includes(q);
+      const familyMatch = (m.family||'').toLowerCase().includes(q);
+      const aliasMatch = (m.aliases||[]).some(a => a.toLowerCase().includes(q));
+      if (!nameMatch && !creatorMatch && !idMatch && !familyMatch && !aliasMatch) return false;
+    }
     // Creator filter
     if (activeCreators.size > 0 && !activeCreators.has(m.creator)) return false;
     // Source filter
@@ -705,6 +803,8 @@ function getFiltered() {
     if (openOnly && m.model_type !== 'open') return false;
     // Has free tier
     if (hasFreeTier && !m.has_free_tier) return false;
+    // Has multiple configurations
+    if (hasConfigs && (m.num_configurations || 1) <= 1) return false;
     // Price filter
     if (priceLimit < Infinity && (m.input_price_per_1m === null || m.input_price_per_1m > priceLimit)) return false;
     return true;
@@ -815,10 +915,12 @@ function render() {
 function renderDetail(m) {
   let html = '<div class="detail-content">';
 
-  // Identity section
+  // Identity section — now includes model_id, family, variant, version
   html += '<div class="detail-section"><h3>Model Info</h3><div class="detail-grid">';
   const infoFields = [
     ['Name', m.name], ['Creator', m.creator], ['Country', m.creator_country],
+    ['Model ID', m.model_id], ['Family', m.family],
+    ['Variant', m.variant || null], ['Version', m.version || null],
     ['Released', m.release_date], ['Type', m.model_type],
     ['Parameters', m.parameters_billions ? m.parameters_billions+'B' : null],
     ['Architecture', m.architecture], ['License', m.license],
@@ -832,15 +934,68 @@ function renderDetail(m) {
     const display = val || '\u2014';
     html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
   }
+  // Aliases
+  if (m.aliases?.length > 0) {
+    html += `<span class="label">Aliases</span><span class="value" style="white-space:normal"><div class="alias-list">`;
+    for (const a of m.aliases) {
+      html += `<span class="alias-tag">${esc(a)}</span>`;
+    }
+    html += '</div></span>';
+  }
   html += '</div></div>';
 
-  // Benchmarks section
+  // Configurations section
+  const configs = m.configurations || [];
+  if (configs.length > 1) {
+    html += '<div class="detail-section" style="grid-column:1/-1"><h3>Configurations (' + configs.length + ')</h3>';
+    html += '<div class="config-cards">';
+    for (const c of configs) {
+      const isBase = !c.reasoning_mode && !c.effort_level;
+      html += `<div class="config-card ${isBase ? 'config-base' : ''}">`;
+      html += '<div class="config-header">';
+      // Build label from config_id
+      const cLabel = isBase ? 'Base' : (c.config_id || '').split(':').slice(1).join(':') || 'Config';
+      html += `<span class="config-label">${esc(cLabel)}</span>`;
+      // Tags
+      if (c.reasoning_mode) {
+        const tagCls = c.reasoning_mode === 'reasoning' ? 'tag-reasoning' :
+                       c.reasoning_mode === 'adaptive' ? 'tag-adaptive' : 'tag-non-reasoning';
+        html += `<span class="config-tag ${tagCls}">${esc(c.reasoning_mode)}</span>`;
+      }
+      if (c.effort_level) {
+        html += `<span class="config-tag tag-effort">${esc(c.effort_level)}</span>`;
+      }
+      html += '</div>';
+      // Source names
+      if (c.source_names?.length) {
+        html += '<div style="font-size:10px;color:var(--color-text-muted);margin-bottom:4px">';
+        html += c.source_names.map(n => esc(n)).join(', ');
+        html += '</div>';
+      }
+      // Config-level benchmarks
+      const cb = c.benchmarks || {};
+      const cbEntries = Object.entries(cb).filter(([k,v]) => v !== null && v !== undefined);
+      if (cbEntries.length > 0) {
+        html += '<div class="config-benchmarks">';
+        for (const [k, v] of cbEntries) {
+          const bLabel = k.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g, ch=>ch.toUpperCase());
+          const bVal = typeof v === 'number' ? (v > 0 && v < 1 ? (v*100).toFixed(1)+'%' : Number(v).toFixed(1)) : v;
+          html += `<span class="cb-label">${esc(bLabel)}</span><span class="cb-val">${esc(String(bVal))}</span>`;
+        }
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // Benchmarks section (model-level aggregate)
   const bench = m.benchmarks || {};
   const benchEntries = Object.entries(bench).filter(([k,v]) => v !== null && v !== undefined);
   if (benchEntries.length > 0) {
-    html += '<div class="detail-section"><h3>Benchmarks</h3><div class="detail-grid">';
+    html += '<div class="detail-section"><h3>Benchmarks (Aggregate)</h3><div class="detail-grid">';
     for (const [k, v] of benchEntries) {
-      const label = k.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      const label = k.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
       const display = typeof v === 'number' ? (v < 1 && v > 0 ? (v*100).toFixed(1)+'%' : v.toFixed(2)) : v;
       html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
     }
@@ -1087,6 +1242,7 @@ function setupUI() {
   document.getElementById('reasoning-filter').addEventListener('change', render);
   document.getElementById('open-only').addEventListener('change', render);
   document.getElementById('has-free-tier').addEventListener('change', render);
+  document.getElementById('has-configs').addEventListener('change', render);
 
   const slider = document.getElementById('price-slider');
   const priceVal = document.getElementById('price-val');
