@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM Model Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --font-body: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+[data-theme="dark"] {
+  --color-bg: #0f0f12;
+  --color-surface: #18181e;
+  --color-surface-2: #1f1f27;
+  --color-surface-3: #26262f;
+  --color-border: #2a2a35;
+  --color-text: #e0dfd8;
+  --color-text-muted: #8a8a90;
+  --color-text-dim: #55555a;
+  --color-primary: #6bc5d2;
+  --color-accent: #e8a44a;
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-row-hover: rgba(107,197,210,0.06);
+  --color-row-expanded: rgba(107,197,210,0.03);
+  --heatmap-low: #1a2332;
+  --heatmap-mid: #1a3a2a;
+  --heatmap-high: #1a4a2a;
+  --price-low: #1a3a2a;
+  --price-high: #3a1a1a;
+}
+[data-theme="light"] {
+  --color-bg: #f5f4f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #f0efeb;
+  --color-surface-3: #e8e7e3;
+  --color-border: #d8d6cf;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6a6a6a;
+  --color-text-dim: #aaaaaa;
+  --color-primary: #01696f;
+  --color-accent: #c07b20;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-row-hover: rgba(1,105,111,0.06);
+  --color-row-expanded: rgba(1,105,111,0.03);
+  --heatmap-low: #f0f4f8;
+  --heatmap-mid: #d0f0d0;
+  --heatmap-high: #80e080;
+  --price-low: #d0f0d0;
+  --price-high: #f0d0d0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.container { max-width: 1800px; margin: 0 auto; padding: 16px 20px; }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+.header h1 {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.header-right { display: flex; align-items: center; gap: 12px; }
+.stats-bar {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+.theme-toggle {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.theme-toggle:hover { border-color: var(--color-primary); }
+
+/* Controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: 350px;
+  padding: 7px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.search-box:focus { outline: none; border-color: var(--color-primary); }
+.search-box::placeholder { color: var(--color-text-dim); }
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.filter-group label { color: var(--color-text-muted); white-space: nowrap; }
+.filter-select {
+  padding: 5px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.filter-checkbox input { cursor: pointer; }
+
+.price-slider-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.price-slider-group label { color: var(--color-text-muted); white-space: nowrap; }
+.price-slider {
+  width: 100px;
+  accent-color: var(--color-primary);
+}
+.price-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-text-muted);
+  min-width: 48px;
+}
+
+/* Creator badges */
+.creator-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.creator-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  transition: all 0.15s;
+  user-select: none;
+}
+.creator-badge.active {
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+.creator-badge:hover { border-color: var(--color-primary); }
+
+/* Column group toggles */
+.col-groups {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.col-group-btn {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+.col-group-btn.active {
+  background: var(--color-surface-3);
+  color: var(--color-text);
+  border-color: var(--color-primary);
+}
+.col-group-btn:hover { border-color: var(--color-primary); }
+
+/* Source filter badges */
+.source-badges {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.source-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  transition: all 0.15s;
+  user-select: none;
+}
+.source-badge.active {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--color-surface-2);
+  padding: 8px 10px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+thead th:hover { color: var(--color-primary); }
+thead th .sort-arrow {
+  font-size: 10px;
+  margin-left: 3px;
+  opacity: 0.4;
+}
+thead th.sorted .sort-arrow { opacity: 1; color: var(--color-primary); }
+
+tbody tr {
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background 0.1s;
+}
+tbody tr:hover { background: var(--color-row-hover); }
+tbody tr.expanded { background: var(--color-row-expanded); }
+td {
+  padding: 6px 10px;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+td.name-cell {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--color-text);
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+td.creator-cell {
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+td.null-val {
+  color: var(--color-text-dim);
+  font-style: italic;
+}
+td.bool-true { color: var(--color-success); text-align: center; }
+td.bool-false { color: var(--color-text-dim); text-align: center; }
+
+/* Expanded row detail */
+.detail-row td {
+  padding: 0;
+  border-bottom: 2px solid var(--color-primary);
+}
+.detail-content {
+  padding: 16px 20px;
+  background: var(--color-surface-2);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.detail-section h3 {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  font-size: 12px;
+}
+.detail-grid .label { color: var(--color-text-muted); }
+.detail-grid .value { font-family: var(--font-mono); font-size: 11px; }
+
+.pricing-table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+.pricing-table th {
+  text-align: left;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  padding: 3px 8px 3px 0;
+  border-bottom: 1px solid var(--color-border);
+  position: static;
+  background: transparent;
+  cursor: default;
+  font-size: 11px;
+}
+.pricing-table td {
+  padding: 3px 8px 3px 0;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 60px;
+  color: var(--color-text-muted);
+  font-size: 16px;
+}
+.loading .spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-msg {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-danger);
+}
+
+/* Footer */
+.footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  font-size: 11px;
+  color: var(--color-text-dim);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>LLM Model Explorer</h1>
+    <div class="header-right">
+      <div class="stats-bar" id="stats-bar"></div>
+      <button class="theme-toggle" id="theme-toggle">Light</button>
+    </div>
+  </div>
+
+  <div class="controls" id="controls">
+    <input type="text" class="search-box" id="search" placeholder="Search models or creators...">
+    <div class="filter-group">
+      <label>Reasoning:</label>
+      <select class="filter-select" id="reasoning-filter">
+        <option value="">All</option>
+        <option value="any">Any reasoning</option>
+        <option value="basic">Basic</option>
+        <option value="advanced">Advanced</option>
+        <option value="frontier">Frontier</option>
+      </select>
+    </div>
+    <label class="filter-checkbox"><input type="checkbox" id="open-only"> Open-weight only</label>
+    <div class="price-slider-group">
+      <label>Max input $/1M:</label>
+      <input type="range" class="price-slider" id="price-slider" min="0" max="100" value="100" step="1">
+      <span class="price-val" id="price-val">any</span>
+    </div>
+  </div>
+
+  <div class="source-badges" id="source-badges"></div>
+  <div class="creator-badges" id="creator-badges"></div>
+  <div class="col-groups" id="col-groups"></div>
+
+  <div class="table-wrapper" id="table-wrapper">
+    <div class="loading"><div class="spinner"></div><br>Loading model data...</div>
+  </div>
+
+  <div class="footer">
+    Data merged from Artificial Analysis, HuggingFace OpenEvals, Vantage, and Bifrost.
+  </div>
+</div>
+
+<script>
+// ── State ──────────────────────────────────────────────────────
+let allModels = [];
+let sortCol = 'name';
+let sortDir = 'asc';
+let expandedId = null;
+let activeCreators = new Set();
+let activeSources = new Set(['aa','hf','vantage','bifrost']);
+
+const CREATOR_COLORS = {
+  openai:'#74d680', anthropic:'#d4a06a', google:'#ea4c89', meta:'#a78bfa',
+  mistral:'#f7a74a', deepseek:'#34d399', alibaba:'#5dadec', xai:'#f472b6',
+  cohere:'#818cf8', amazon:'#fb923c', nvidia:'#a3e635', microsoft:'#60a5fa',
+  ibm:'#c084fc', samsung:'#38bdf8', together:'#4ade80', fireworks:'#f97316',
+  groq:'#22d3ee', perplexity:'#e879f9', databricks:'#facc15', writer:'#a78bfa'
+};
+
+// ── Column groups ──────────────────────────────────────────────
+const COL_GROUPS = {
+  Identity: [
+    {key:'name', label:'Model', fmt:'name'},
+    {key:'creator', label:'Creator', fmt:'creator'},
+    {key:'release_date', label:'Released', fmt:'text'},
+    {key:'model_type', label:'Type', fmt:'text'},
+  ],
+  Metadata: [
+    {key:'parameters_billions', label:'Params (B)', fmt:'num1'},
+    {key:'reasoning_tier', label:'Reasoning', fmt:'text'},
+    {key:'selfhostable', label:'Selfhost', fmt:'bool'},
+    {key:'context_window', label:'Context', fmt:'tokens'},
+  ],
+  Pricing: [
+    {key:'input_price_per_1m', label:'Input $/1M', fmt:'price'},
+    {key:'output_price_per_1m', label:'Output $/1M', fmt:'price'},
+    {key:'blended_price_per_1m', label:'Blended $/1M', fmt:'price'},
+    {key:'cache_read_price_per_1m', label:'Cache Read', fmt:'price'},
+    {key:'cache_write_price_per_1m', label:'Cache Write', fmt:'price'},
+    {key:'num_providers', label:'Providers', fmt:'int'},
+  ],
+  Performance: [
+    {key:'output_tokens_per_sec', label:'Tok/s', fmt:'num1'},
+    {key:'time_to_first_token_s', label:'TTFT (s)', fmt:'num2'},
+    {key:'time_to_first_answer_s', label:'TTFA (s)', fmt:'num2'},
+  ],
+  Capabilities: [
+    {key:'supports_vision', label:'Vision', fmt:'bool'},
+    {key:'supports_reasoning', label:'Reasoning', fmt:'bool'},
+    {key:'supports_function_calling', label:'Fn Call', fmt:'bool'},
+    {key:'supports_web_search', label:'Web', fmt:'bool'},
+    {key:'supports_prompt_caching', label:'Cache', fmt:'bool'},
+    {key:'supports_pdf_input', label:'PDF', fmt:'bool'},
+  ],
+  Benchmarks: [
+    {key:'benchmarks.aa_intelligence_index', label:'AA Intel', fmt:'bench'},
+    {key:'benchmarks.aa_coding_index', label:'AA Code', fmt:'bench'},
+    {key:'benchmarks.gpqa', label:'GPQA', fmt:'pct'},
+    {key:'benchmarks.hle', label:'HLE', fmt:'pct'},
+    {key:'benchmarks.livecodebench', label:'LCB', fmt:'pct'},
+    {key:'benchmarks.mmlu_pro', label:'MMLU-Pro', fmt:'pct'},
+    {key:'benchmarks.aime_2025', label:'AIME 25', fmt:'pct'},
+    {key:'benchmarks.math_500', label:'MATH', fmt:'pct'},
+    {key:'benchmarks.swe_bench_verified', label:'SWE', fmt:'pct'},
+    {key:'benchmarks.terminalbench_hard', label:'TBench', fmt:'pct'},
+  ],
+  'Cost Eff.': [
+    {key:'swe_bench_cost_per_resolved', label:'SWE $/fix', fmt:'price'},
+    {key:'skatebench_cost_per_test', label:'Skate $/test', fmt:'price'},
+    {key:'hf_aggregate_score', label:'HF Agg', fmt:'num1'},
+  ],
+};
+
+let activeGroups = new Set(['Identity','Pricing','Performance']);
+
+// ── Helpers ────────────────────────────────────────────────────
+function getVal(obj, path) {
+  const parts = path.split('.');
+  let v = obj;
+  for (const p of parts) { v = v?.[p]; }
+  return v;
+}
+
+function fmtVal(val, fmt) {
+  if (val === null || val === undefined || (typeof val === 'number' && isNaN(val)))
+    return {html:'<span class="null-val">\u2014</span>', cls:'null-val', raw:null};
+  switch(fmt) {
+    case 'name': return {html:esc(val), cls:'name-cell', raw:val};
+    case 'creator': return {html:esc(val), cls:'creator-cell', raw:val};
+    case 'text': return {html:esc(String(val)), cls:'', raw:val};
+    case 'int': return {html:String(val), cls:'', raw:val};
+    case 'num1': return {html:Number(val).toFixed(1), cls:'', raw:val};
+    case 'num2': return {html:Number(val).toFixed(2), cls:'', raw:val};
+    case 'price': return {html:'$'+fmtPrice(val), cls:'', raw:val};
+    case 'pct': return {html:(Number(val)*100).toFixed(1)+'%', cls:'', raw:val};
+    case 'bench': return {html:Number(val).toFixed(1), cls:'', raw:val};
+    case 'tokens': return {html:fmtTokens(val), cls:'', raw:val};
+    case 'bool':
+      if (val === true) return {html:'\u2713', cls:'bool-true', raw:1};
+      return {html:'\u2715', cls:'bool-false', raw:0};
+    default: return {html:esc(String(val)), cls:'', raw:val};
+  }
+}
+
+function fmtPrice(v) {
+  if (v === null || v === undefined) return '\u2014';
+  if (v >= 100) return Number(v).toFixed(0);
+  if (v >= 1) return Number(v).toFixed(2);
+  if (v >= 0.01) return Number(v).toFixed(3);
+  return Number(v).toFixed(4);
+}
+
+function fmtTokens(v) {
+  if (!v) return '\u2014';
+  if (v >= 1e6) return (v/1e6).toFixed(1)+'M';
+  if (v >= 1e3) return (v/1e3).toFixed(0)+'K';
+  return String(v);
+}
+
+function esc(s) { const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// Heatmap for benchmarks (higher = greener)
+function benchColor(val, min, max) {
+  if (val === null || val === undefined) return '';
+  const t = Math.max(0, Math.min(1, (val - min) / (max - min || 1)));
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  if (isDark) {
+    const r = Math.round(26 + t * 0);
+    const g = Math.round(35 + t * 50);
+    const b = Math.round(50 - t * 18);
+    return `background:rgb(${r},${g},${b})`;
+  } else {
+    const r = Math.round(240 - t * 112);
+    const g = Math.round(244 - t * 20);
+    const b = Math.round(248 - t * 120);
+    return `background:rgb(${r},${g},${b})`;
+  }
+}
+
+// Heatmap for prices (lower = greener)
+function priceColor(val, min, max) {
+  if (val === null || val === undefined) return '';
+  const t = Math.max(0, Math.min(1, (val - min) / (max - min || 1)));
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  if (isDark) {
+    const r = Math.round(26 + t * 32);
+    const g = Math.round(58 - t * 32);
+    const b = Math.round(42 - t * 16);
+    return `background:rgb(${r},${g},${b})`;
+  } else {
+    const r = Math.round(208 + t * 32);
+    const g = Math.round(240 - t * 32);
+    const b = Math.round(208);
+    return `background:rgb(${r},${g},${b})`;
+  }
+}
+
+// ── Compute column stats for heatmaps ──────────────────────────
+let colStats = {};
+function computeStats(models) {
+  colStats = {};
+  for (const [gName, cols] of Object.entries(COL_GROUPS)) {
+    for (const col of cols) {
+      if (!['price','pct','bench','num1'].includes(col.fmt)) continue;
+      const vals = models.map(m => getVal(m, col.key)).filter(v => v !== null && v !== undefined && !isNaN(v));
+      if (vals.length > 0) {
+        colStats[col.key] = {min: Math.min(...vals), max: Math.max(...vals)};
+      }
+    }
+  }
+}
+
+// ── Filtering ──────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const reasoningFilter = document.getElementById('reasoning-filter').value;
+  const openOnly = document.getElementById('open-only').checked;
+  const maxPrice = parseInt(document.getElementById('price-slider').value);
+  const priceLimit = maxPrice >= 100 ? Infinity : maxPrice;
+
+  return allModels.filter(m => {
+    // Text search
+    if (q && !m.name.toLowerCase().includes(q) && !m.creator.toLowerCase().includes(q)) return false;
+    // Creator filter
+    if (activeCreators.size > 0 && !activeCreators.has(m.creator)) return false;
+    // Source filter
+    if (activeSources.size < 4) {
+      if (!m.sources.some(s => activeSources.has(s))) return false;
+    }
+    // Reasoning filter
+    if (reasoningFilter === 'any' && !m.reasoning) return false;
+    if (reasoningFilter && reasoningFilter !== 'any' && m.reasoning_tier !== reasoningFilter) return false;
+    // Open-weight only
+    if (openOnly && m.model_type !== 'open') return false;
+    // Price filter
+    if (priceLimit < Infinity && (m.input_price_per_1m === null || m.input_price_per_1m > priceLimit)) return false;
+    return true;
+  });
+}
+
+// ── Sort ───────────────────────────────────────────────────────
+function sortModels(models) {
+  return [...models].sort((a, b) => {
+    let va = getVal(a, sortCol);
+    let vb = getVal(b, sortCol);
+    // Nulls always last
+    if (va === null || va === undefined) return 1;
+    if (vb === null || vb === undefined) return -1;
+    if (typeof va === 'string') va = va.toLowerCase();
+    if (typeof vb === 'string') vb = vb.toLowerCase();
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+// ── Get visible columns ────────────────────────────────────────
+function getVisibleCols() {
+  const cols = [];
+  for (const [gName, gcols] of Object.entries(COL_GROUPS)) {
+    if (activeGroups.has(gName)) cols.push(...gcols);
+  }
+  return cols;
+}
+
+// ── Render ─────────────────────────────────────────────────────
+function render() {
+  const filtered = getFiltered();
+  const sorted = sortModels(filtered);
+  const cols = getVisibleCols();
+
+  computeStats(filtered);
+
+  // Stats bar
+  document.getElementById('stats-bar').textContent =
+    `${sorted.length} / ${allModels.length} models`;
+
+  const wrapper = document.getElementById('table-wrapper');
+
+  let html = '<table><thead><tr>';
+  for (const col of cols) {
+    const isSorted = sortCol === col.key;
+    const arrow = isSorted ? (sortDir === 'asc' ? '\u25B2' : '\u25BC') : '\u25B4';
+    html += `<th class="${isSorted?'sorted':''}" data-col="${col.key}">`;
+    html += `${esc(col.label)} <span class="sort-arrow">${arrow}</span></th>`;
+  }
+  html += '</tr></thead><tbody>';
+
+  for (const m of sorted) {
+    const isExpanded = expandedId === m.id;
+    html += `<tr class="model-row ${isExpanded?'expanded':''}" data-id="${esc(m.id)}">`;
+    for (const col of cols) {
+      const val = getVal(m, col.key);
+      const f = fmtVal(val, col.fmt);
+      let style = '';
+      const stats = colStats[col.key];
+      if (stats && f.raw !== null) {
+        if (col.fmt === 'price') {
+          style = priceColor(f.raw, stats.min, stats.max);
+        } else if (['pct','bench','num1'].includes(col.fmt) && col.key.startsWith('benchmarks.')) {
+          style = benchColor(f.raw, stats.min, stats.max);
+        }
+      }
+      html += `<td class="${f.cls}" ${style?'style="'+style+'"':''}>${f.html}</td>`;
+    }
+    html += '</tr>';
+
+    if (isExpanded) {
+      html += `<tr class="detail-row"><td colspan="${cols.length}">`;
+      html += renderDetail(m);
+      html += '</td></tr>';
+    }
+  }
+
+  html += '</tbody></table>';
+  wrapper.innerHTML = html;
+
+  // Bind events
+  wrapper.querySelectorAll('th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const col = th.dataset.col;
+      if (sortCol === col) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      } else {
+        sortCol = col;
+        sortDir = 'asc';
+      }
+      render();
+    });
+  });
+
+  wrapper.querySelectorAll('.model-row').forEach(tr => {
+    tr.addEventListener('click', () => {
+      const id = tr.dataset.id;
+      expandedId = expandedId === id ? null : id;
+      render();
+    });
+  });
+}
+
+// ── Detail panel ───────────────────────────────────────────────
+function renderDetail(m) {
+  let html = '<div class="detail-content">';
+
+  // Identity section
+  html += '<div class="detail-section"><h3>Model Info</h3><div class="detail-grid">';
+  const infoFields = [
+    ['Name', m.name], ['Creator', m.creator], ['Country', m.creator_country],
+    ['Released', m.release_date], ['Type', m.model_type],
+    ['Parameters', m.parameters_billions ? m.parameters_billions+'B' : null],
+    ['Architecture', m.architecture], ['License', m.license],
+    ['Context Window', fmtTokens(m.context_window)],
+    ['Max Output', fmtTokens(m.max_output_tokens)],
+    ['Reasoning Tier', m.reasoning_tier],
+    ['Selfhostable', m.selfhostable === true ? 'Yes' : m.selfhostable === false ? 'No' : null],
+    ['Sources', m.sources?.join(', ')],
+  ];
+  for (const [label, val] of infoFields) {
+    const display = val || '\u2014';
+    html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
+  }
+  html += '</div></div>';
+
+  // Benchmarks section
+  const bench = m.benchmarks || {};
+  const benchEntries = Object.entries(bench).filter(([k,v]) => v !== null && v !== undefined);
+  if (benchEntries.length > 0) {
+    html += '<div class="detail-section"><h3>Benchmarks</h3><div class="detail-grid">';
+    for (const [k, v] of benchEntries) {
+      const label = k.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      const display = typeof v === 'number' ? (v < 1 && v > 0 ? (v*100).toFixed(1)+'%' : v.toFixed(2)) : v;
+      html += `<span class="label">${esc(label)}</span><span class="value">${esc(String(display))}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Performance section
+  if (m.output_tokens_per_sec || m.time_to_first_token_s) {
+    html += '<div class="detail-section"><h3>Performance</h3><div class="detail-grid">';
+    const perfFields = [
+      ['Output tok/s', m.output_tokens_per_sec?.toFixed(1)],
+      ['TTFT', m.time_to_first_token_s ? m.time_to_first_token_s.toFixed(2)+'s' : null],
+      ['TTFA', m.time_to_first_answer_s ? m.time_to_first_answer_s.toFixed(2)+'s' : null],
+    ];
+    for (const [label, val] of perfFields) {
+      html += `<span class="label">${esc(label)}</span><span class="value">${esc(val||'\u2014')}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Capabilities section
+  const caps = [
+    ['Vision', m.supports_vision], ['Function Calling', m.supports_function_calling],
+    ['Web Search', m.supports_web_search], ['PDF Input', m.supports_pdf_input],
+    ['Audio In', m.supports_audio_input], ['Audio Out', m.supports_audio_output],
+    ['Video In', m.supports_video_input], ['Prompt Caching', m.supports_prompt_caching],
+    ['Computer Use', m.supports_computer_use],
+  ].filter(([_,v]) => v !== null && v !== undefined);
+  if (caps.length > 0) {
+    html += '<div class="detail-section"><h3>Capabilities</h3><div class="detail-grid">';
+    for (const [label, val] of caps) {
+      const icon = val ? '\u2713' : '\u2715';
+      const color = val ? 'var(--color-success)' : 'var(--color-text-dim)';
+      html += `<span class="label">${esc(label)}</span><span class="value" style="color:${color}">${icon}</span>`;
+    }
+    if (m.supported_modalities?.length) {
+      html += `<span class="label">Modalities</span><span class="value">${esc(m.supported_modalities.join(', '))}</span>`;
+    }
+    html += '</div></div>';
+  }
+
+  // Provider pricing (from Bifrost)
+  if (m.provider_pricing?.length > 0) {
+    html += '<div class="detail-section"><h3>Provider Pricing (per 1M tokens)</h3>';
+    html += '<table class="pricing-table"><thead><tr><th>Provider</th><th>Input</th><th>Output</th><th>Cache Read</th></tr></thead><tbody>';
+    for (const p of m.provider_pricing.slice(0, 20)) {
+      html += `<tr><td>${esc(p.provider)}</td>`;
+      html += `<td>${p.input_price_per_1m !== null ? '$'+fmtPrice(p.input_price_per_1m) : '\u2014'}</td>`;
+      html += `<td>${p.output_price_per_1m !== null ? '$'+fmtPrice(p.output_price_per_1m) : '\u2014'}</td>`;
+      html += `<td>${p.cache_read_price_per_1m ? '$'+fmtPrice(p.cache_read_price_per_1m) : '\u2014'}</td>`;
+      html += '</tr>';
+    }
+    if (m.provider_pricing.length > 20) {
+      html += `<tr><td colspan="4" style="color:var(--color-text-muted)">... and ${m.provider_pricing.length - 20} more</td></tr>`;
+    }
+    html += '</tbody></table></div>';
+  }
+
+  // Vendor pricing (from Vantage)
+  if (m.vendor_pricing?.length > 0) {
+    html += '<div class="detail-section"><h3>Cloud Vendor Pricing (per 1M tokens)</h3>';
+    html += '<table class="pricing-table"><thead><tr><th>Vendor</th><th>Input</th><th>Output</th></tr></thead><tbody>';
+    for (const v of m.vendor_pricing) {
+      html += `<tr><td>${esc(v.vendor)}</td>`;
+      html += `<td>${v.input_price_per_1m !== null ? '$'+fmtPrice(v.input_price_per_1m) : '\u2014'}</td>`;
+      html += `<td>${v.output_price_per_1m !== null ? '$'+fmtPrice(v.output_price_per_1m) : '\u2014'}</td>`;
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
+// ── Setup UI ───────────────────────────────────────────────────
+function setupUI() {
+  // Theme toggle
+  const toggle = document.getElementById('theme-toggle');
+  toggle.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.dataset.theme === 'dark';
+    html.dataset.theme = isDark ? 'light' : 'dark';
+    toggle.textContent = isDark ? 'Dark' : 'Light';
+    render();
+  });
+
+  // Column group buttons
+  const groupsEl = document.getElementById('col-groups');
+  for (const gName of Object.keys(COL_GROUPS)) {
+    const btn = document.createElement('button');
+    btn.className = 'col-group-btn' + (activeGroups.has(gName) ? ' active' : '');
+    btn.textContent = gName;
+    btn.addEventListener('click', () => {
+      if (activeGroups.has(gName)) activeGroups.delete(gName);
+      else activeGroups.add(gName);
+      btn.classList.toggle('active');
+      render();
+    });
+    groupsEl.appendChild(btn);
+  }
+
+  // Source badges
+  const srcEl = document.getElementById('source-badges');
+  for (const src of ['aa','hf','vantage','bifrost']) {
+    const badge = document.createElement('span');
+    badge.className = 'source-badge active';
+    badge.textContent = src;
+    badge.addEventListener('click', () => {
+      if (activeSources.has(src)) activeSources.delete(src);
+      else activeSources.add(src);
+      badge.classList.toggle('active');
+      render();
+    });
+    srcEl.appendChild(badge);
+  }
+
+  // Creator badges
+  const creatorCounts = {};
+  for (const m of allModels) {
+    creatorCounts[m.creator] = (creatorCounts[m.creator] || 0) + 1;
+  }
+  const topCreators = Object.entries(creatorCounts)
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 20)
+    .map(([name]) => name);
+
+  const badgesEl = document.getElementById('creator-badges');
+  for (const creator of topCreators) {
+    const badge = document.createElement('span');
+    badge.className = 'creator-badge';
+    badge.textContent = creator;
+    const color = CREATOR_COLORS[creator];
+    if (color) badge.style.borderColor = color;
+    badge.addEventListener('click', () => {
+      if (activeCreators.has(creator)) {
+        activeCreators.delete(creator);
+        badge.classList.remove('active');
+        if (color) { badge.style.background = ''; badge.style.color = ''; }
+      } else {
+        activeCreators.add(creator);
+        badge.classList.add('active');
+        if (color) { badge.style.background = color; badge.style.color = '#111'; }
+      }
+      render();
+    });
+    badgesEl.appendChild(badge);
+  }
+
+  // Search + filters
+  document.getElementById('search').addEventListener('input', debounce(render, 150));
+  document.getElementById('reasoning-filter').addEventListener('change', render);
+  document.getElementById('open-only').addEventListener('change', render);
+
+  const slider = document.getElementById('price-slider');
+  const priceVal = document.getElementById('price-val');
+  slider.addEventListener('input', () => {
+    const v = parseInt(slider.value);
+    priceVal.textContent = v >= 100 ? 'any' : '$'+v;
+    render();
+  });
+}
+
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// ── Init ───────────────────────────────────────────────────────
+async function init() {
+  try {
+    const resp = await fetch('../data/merged_models.json');
+    if (!resp.ok) throw new Error('Failed to load data: ' + resp.status);
+    const data = await resp.json();
+    allModels = data.models || [];
+    setupUI();
+    render();
+  } catch(e) {
+    document.getElementById('table-wrapper').innerHTML =
+      `<div class="error-msg">Error loading data: ${esc(e.message)}<br><br>Make sure merged_models.json exists in the data/ directory.</div>`;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
