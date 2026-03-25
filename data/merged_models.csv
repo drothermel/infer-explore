@@ -216,7 +216,7 @@ lgairesearch/exaone-4-0-1-2b-reasoning,Exaone 4.0 1.2B (Reasoning),lgairesearch,
 lgairesearch/exaone-4-0-32b-non-reasoning,EXAONE 4.0 32B (Non-reasoning),lgairesearch,,2025-07-15,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
 lgairesearch/exaone-4-0-32b-reasoning,EXAONE 4.0 32B (Reasoning),lgairesearch,,2025-07-15,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
 facebook/facebook/cwm,facebook/cwm,facebook,,,open,32.6,,,,,,,,,,,,,,,,,,0,hf,53.9
-tiiuae/falcon-h1r-7b,Falcon-H1R-7B,tiiuae,,2026-01-04,open,nan,,,,,,0,0,0,,,0,0,,,,,,0,"aa, hf",41.6
+tiiuae/falcon-h1r-7b,Falcon-H1R-7B,tiiuae,,2026-01-04,open,,,,,,,0,0,0,,,0,0,,,,,,0,"aa, hf",41.6
 fireworks/fare-20b,fare-20b,fireworks,,,,,131072,131072,,,,0.8999999999999999,0.8999999999999999,,,,,,,,,,,1,bifrost,
 fireworks/firefunction-v1,firefunction-v1,fireworks,,,,,32768,32768,,,,0.5,0.5,,,,,,,,,,,1,bifrost,
 fireworks/firefunction-v2,firefunction-v2,fireworks,,,,,8192,8192,,,,0.8999999999999999,0.8999999999999999,,,,,,,True,,,,1,bifrost,
@@ -569,7 +569,7 @@ liquidai/lfm2-5-1-2b-instruct,LFM2.5-1.2B-Instruct,liquidai,,2026-01-05,,,,,,,,0
 liquidai/lfm2-5-1-2b-thinking,LFM2.5-1.2B-Thinking,liquidai,,2026-01-20,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
 liquidai/lfm2-5-vl-1-6b,LFM2.5-VL-1.6B,liquidai,,2026-01-05,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
 lgai-exaone/lgai-exaone/k-exaone-236b-a23b,LGAI-EXAONE/K-EXAONE-236B-A23B,lgai-exaone,,,open,237.1,,,,,,,,,,,,,,,,,,0,hf,58.83
-lightonai/lightonai/lightonocr-1b-1025,lightonai/LightOnOCR-1B-1025,lightonai,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,76.1
+lightonai/lightonai/lightonocr-1b-1025,lightonai/LightOnOCR-1B-1025,lightonai,,,open,,,,,,,,,,,,,,,,,,,0,hf,76.1
 lightonai/lightonai/lightonocr-2-1b,lightonai/LightOnOCR-2-1B,lightonai,,,open,1.0,,,,,,,,,,,,,,,,,,0,hf,83.2
 inclusionai/ling-1t,Ling-1T,inclusionai,,2025-10-08,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
 inclusionai/ling-flash-2-0,Ling-flash-2.0,inclusionai,,2025-09-17,,,,,,,,0.14,0.57,0.247,,,67.178,1.687,,,,,,0,aa,
@@ -710,7 +710,7 @@ azure/mai-ds-r1,mai-ds-r1,azure,,,,,128000,8192,True,,,1.35,5.4,,,,,,,,,,,1,bifr
 ovhcloud/mamba-codestral-7b,mamba-codestral-7b,ovhcloud,,,,,256000,256000,,,,0.19,0.19,,,,,,,False,,,,1,bifrost,
 vertex-ai-language-models/medlm-large,medlm-large,vertex_ai-language-models,,,,,8192,1024,,,,,,,,,,,,,,,,1,bifrost,
 vertex-ai-language-models/medlm-medium,medlm-medium,vertex_ai-language-models,,,,,32768,8192,,,,,,,,,,,,,,,,1,bifrost,
-meituan-longcat/meituan-longcat/longcat-flash-lite,meituan-longcat/LongCat-Flash-Lite,meituan-longcat,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,78.29
+meituan-longcat/meituan-longcat/longcat-flash-lite,meituan-longcat/LongCat-Flash-Lite,meituan-longcat,,,open,,,,,,,,,,,,,,,,,,,0,hf,78.29
 meituan-longcat/meituan-longcat/longcat-flash-thinking-2601,meituan-longcat/LongCat-Flash-Thinking-2601,meituan-longcat,,,open,561.9,,,,,,,,,,,,,,,,,,0,hf,52.85
 inception/mercury-2,Mercury 2,inception,,2026-02-20,,,,,,,,0.25,0.75,0.375,,,927.08,3.905,,,,,,0,aa,
 vercel-ai-gateway/mercury-coder-small,mercury-coder-small,vercel_ai_gateway,,,,,32000,16384,,,,0.25,1.0,,,,,,,,,,,1,bifrost,
@@ -817,7 +817,7 @@ ibm/mt0-xxl-13b,mt0-xxl-13b,ibm,,,,,8192,8192,,,,500.0,2000.0,,,,,,False,False,,
 deepinfra/mythomax-l2-13b,mythomax-l2-13b,deepinfra,,,,,4096,4096,,,,0.08,0.09,,,,,,,True,,,,4,bifrost,
 nanbeige/nanbeige/nanbeige4-1-3b,Nanbeige/Nanbeige4.1-3B,nanbeige,,,open,3.9,,,,,,,,,,,,,,,,,,0,hf,48.2
 nanbeige/nanbeige4-1-3b,Nanbeige4.1-3B,nanbeige,,2026-02-11,,,,,,,,0,0,0,,,0,0,,,,,,0,aa,
-nanonets/nanonets/nanonets-ocr2-3b,nanonets/Nanonets-OCR2-3B,nanonets,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,69.5
+nanonets/nanonets/nanonets-ocr2-3b,nanonets/Nanonets-OCR2-3B,nanonets,,,open,,,,,,,,,,,,,,,,,,,0,hf,69.5
 nvidia/nemotron-nano-3-30b,Nemotron Nano 3 30B,nvidia,US,,open,,262144,8192,True,,True,0.06,0.24,,,,,,,True,,,,1,"vantage, bifrost",
 fireworks/nemotron-nano-v2-12b-vl,nemotron-nano-v2-12b-vl,fireworks,,,,,4096,4096,,,,0.09999999999999999,0.09999999999999999,,,,,,,,,,,1,bifrost,
 fireworks/nous-capybara-7b-v1-9,nous-capybara-7b-v1.9,fireworks,,,,,32768,32768,,,,0.19999999999999998,0.19999999999999998,,,,,,,,,,,1,bifrost,
@@ -862,7 +862,7 @@ fireworks/nvidia-nemotron-nano-12b-v2,nvidia-nemotron-nano-12b-v2,fireworks,,,,,
 amazon/nvidia-nemotron-nano-3-30b,nvidia-nemotron-nano-3-30b,amazon,,,,,262144,8192,,,,0.06,0.24,,,,,,,True,,,,1,bifrost,
 deepinfra/nvidia-nemotron-nano-9b-v2,nvidia-nemotron-nano-9b-v2,deepinfra,,,,,131072,131072,,,,0.04,0.16,,,,,,,True,,,,3,bifrost,
 nvidia/nvidia/nemotron-cascade-2-30b-a3b,nvidia/Nemotron-Cascade-2-30B-A3B,nvidia,,,open,31.6,,,,,,,,,,,,,,,,,,0,hf,57.87
-nvidia/nvidia/nemotron-orchestrator-8b,nvidia/Nemotron-Orchestrator-8B,nvidia,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,37.1
+nvidia/nvidia/nemotron-orchestrator-8b,nvidia/Nemotron-Orchestrator-8B,nvidia,,,open,,,,,,,,,,,,,,,,,,,0,hf,37.1
 nvidia/nvidia/nemotron-terminal-14b,nvidia/Nemotron-Terminal-14B,nvidia,,,open,14.8,,,,,,,,,,,,,,,,,,0,hf,20.2
 nvidia/nvidia/nemotron-terminal-32b,nvidia/Nemotron-Terminal-32B,nvidia,,,open,32.8,,,,,,,,,,,,,,,,,,0,hf,27.4
 nvidia/nvidia/nemotron-terminal-8b,nvidia/Nemotron-Terminal-8B,nvidia,,,open,8.2,,,,,,,,,,,,,,,,,,0,hf,13.0
@@ -946,7 +946,7 @@ novita/qwen-mt-plus,qwen-mt-plus,novita,,,,,16384,8192,,,,0.25,0.75,,,,,,,,,,,1,
 publicai/qwen-sea-lion-v4-32b-it,qwen-sea-lion-v4-32b-it,publicai,,,,,32768,4096,,,,0,0,,,,,,,True,,,,1,bifrost,
 openrouter/qwen-vl-plus,qwen-vl-plus,openrouter,,,,,8192,2048,,,,0.21,0.63,,,,,,True,,,,,1,bifrost,
 alibaba/qwen/qwen2-7b,Qwen/Qwen2-7B,alibaba,,,open,7.6,,,,,,,,,,,,,,,,,,0,hf,79.9
-alibaba/qwen/qwen3-235b-a22b-thinking-2507,Qwen/Qwen3-235B-A22B-Thinking-2507,alibaba,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,84.4
+alibaba/qwen/qwen3-235b-a22b-thinking-2507,Qwen/Qwen3-235B-A22B-Thinking-2507,alibaba,,,open,,,,,,,,,,,,,,,,,,,0,hf,84.4
 alibaba/qwen/qwen3-4b-instruct-2507,Qwen/Qwen3-4B-Instruct-2507,alibaba,,,open,4.0,,,,,,,,,,,,,,,,,,0,hf,65.8
 alibaba/qwen/qwen3-5-0-8b,Qwen/Qwen3.5-0.8B,alibaba,,,open,0.9,,,,,,,,,,,,,,,,,,0,hf,20.8
 alibaba/qwen/qwen3-5-122b-a10b,Qwen/Qwen3.5-122B-A10B,alibaba,,,open,125.1,,,,,,,,,,,,,,,,,,0,hf,64.0
@@ -1196,7 +1196,7 @@ zai-org/zai-org/glm-4-6,zai-org/GLM-4.6,zai-org,,,open,356.8,,,,,,,,,,,,,,,,,,0,
 zai-org/zai-org/glm-4-7,zai-org/GLM-4.7,zai-org,,,open,358.3,,,,,,,,,,,,,,,,,,0,hf,64.15
 zai-org/zai-org/glm-4-7-flash,zai-org/GLM-4.7-Flash,zai-org,,,open,31.2,,,,,,,,,,,,,,,,,,0,hf,49.6
 zai-org/zai-org/glm-5,zai-org/GLM-5,zai-org,,,open,753.9,,,,,,,,,,,,,,,,,,0,hf,70.65
-zai-org/zai-org/glm-ocr,zai-org/GLM-OCR,zai-org,,,open,nan,,,,,,,,,,,,,,,,,,0,hf,75.2
+zai-org/zai-org/glm-ocr,zai-org/GLM-OCR,zai-org,,,open,,,,,,,,,,,,,,,,,,,0,hf,75.2
 amazon/zai-glm-4-7,zai.glm-4.7,amazon,,,,,200000,128000,True,,,0.6,2.2,,,,,,,True,,,,1,bifrost,
 amazon/zai-glm-4-7-flash,zai.glm-4.7-flash,amazon,,,,,200000,128000,True,,,0.07,0.39999999999999997,,,,,,,True,,,,1,bifrost,
 anyscale/zephyr-7b,zephyr-7b,anyscale,,,,,16384,16384,,,,0.15,0.15,,,,,,,,,,,2,bifrost,

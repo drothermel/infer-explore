@@ -6,6 +6,7 @@ single unified JSON/CSV.
 """
 
 import json
+import math
 import re
 from collections import defaultdict
 from pathlib import Path
@@ -823,10 +824,24 @@ def _flatten_for_csv(record: dict) -> dict:
 # ---------------------------------------------------------------------------
 
 
+def _sanitize_nans(obj):
+    """Recursively replace NaN/Inf floats with None for JSON safety."""
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    if isinstance(obj, dict):
+        return {k: _sanitize_nans(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nans(v) for v in obj]
+    return obj
+
+
 def merge_and_save() -> list[dict]:
     """Merge all sources, save JSON + CSV, return unified list."""
     unified = merge()
     data_dir = get_data_dir()
+
+    # Clean NaN values (from HuggingFace data) before saving
+    unified = _sanitize_nans(unified)
 
     # Save JSON
     save_json(unified, data_dir / "merged_models.json", source_url="merged")
