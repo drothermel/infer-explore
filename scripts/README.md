@@ -1,31 +1,42 @@
 # Scripts
 
-Data-fetching scripts for the infer-explore project.
+Thin wrappers around the `infer_explore` library. You can also use
+`uv run <entry-point>` directly (see below).
 
 ## Setup
 
 ```bash
-pip install -r scripts/requirements.txt
-cp .env.example .env
-# Edit .env and add your API keys
+uv sync                  # install deps + library
+cp .env.example .env     # add your API keys
 ```
 
-## fetch_artificial_analysis.py
-
-Pulls model data from the [Artificial Analysis](https://artificialanalysis.ai/) free API:
-
-- **Benchmark scores**: Intelligence Index, Coding Index, Math Index, MMLU-Pro, GPQA, HLE, LiveCodeBench, SciCode, MATH-500, AIME, and more
-- **Pricing**: input/output/blended cost per 1M tokens
-- **Speed**: median output tokens/sec, time to first token
-- **Metadata**: model name, creator, release date, slug
+## Entry points (preferred)
 
 ```bash
-python scripts/fetch_artificial_analysis.py
+uv run fetch-aa        # Artificial Analysis only
+uv run fetch-vantage   # Vantage only
+uv run fetch-hf        # HuggingFace OpenEvals only
+uv run fetch-all       # all three sources
 ```
 
-Outputs:
-- `data/artificial_analysis_models.json` — raw API response (full detail)
-- `data/artificial_analysis_models.csv` — flattened summary sorted by Intelligence Index
+## Scripts (alternative)
 
-API docs: https://artificialanalysis.ai/api-reference#models-endpoint  
-Rate limit: 1,000 requests/day (free tier)
+```bash
+uv run python scripts/fetch_artificial_analysis.py
+uv run python scripts/fetch_vantage.py
+uv run python scripts/fetch_huggingface.py
+uv run python scripts/fetch_all.py
+```
+
+## Output
+
+All data is written to `data/`:
+
+| File | Source | Auth |
+|------|--------|------|
+| `artificial_analysis_models.json` | [Artificial Analysis API](https://artificialanalysis.ai/api-reference) | API key (free) |
+| `artificial_analysis_models.csv` | ↑ | ↑ |
+| `vantage_models.json` | [vantage.sh/models](https://www.vantage.sh/models/data.json) | None |
+| `vantage_models.csv` | ↑ | ↑ |
+| `huggingface_openevals_models.json` | [OpenEvals/leaderboard-data](https://huggingface.co/datasets/OpenEvals/leaderboard-data) | None |
+| `huggingface_openevals_models.csv` | ↑ | ↑ |
