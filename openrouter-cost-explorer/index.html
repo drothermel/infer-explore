@@ -282,12 +282,140 @@ input[type="range"]::-moz-range-thumb {
   font-family: var(--font-mono);
 }
 
+/* Flex wrapper: chart + detail panel side by side */
+.chart-wrapper {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+
 .chart-container {
   position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   overflow: hidden;
+  flex: 1;
+  min-width: 0;
+  transition: flex 0.3s ease;
+}
+
+/* Detail panel */
+.detail-panel {
+  width: 0;
+  overflow: hidden;
+  opacity: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: none;
+  border-radius: 0 10px 10px 0;
+  transition: width 0.3s ease, opacity 0.25s ease, padding 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.detail-panel.open {
+  width: 320px;
+  opacity: 1;
+  padding: 1.25rem;
+  border-left: 1px solid var(--color-border);
+}
+.chart-wrapper .chart-container {
+  border-radius: 10px;
+}
+.chart-wrapper .chart-container:has(+ .detail-panel.open) {
+  border-radius: 10px 0 0 10px;
+}
+
+.detail-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.detail-panel-close {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.detail-panel-close:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
+}
+
+.detail-model-name {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.3;
+  word-break: break-word;
+  margin-right: 0.5rem;
+}
+
+.detail-model-id {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-faint);
+  word-break: break-all;
+  margin-bottom: 1rem;
+}
+
+.detail-section {
+  margin-bottom: 0.85rem;
+}
+
+.detail-section-title {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--color-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.25rem 0;
+  font-size: 0.82rem;
+}
+.detail-row + .detail-row {
+  border-top: 1px solid var(--color-border);
+}
+
+.detail-row-label {
+  color: var(--color-text-muted);
+}
+.detail-row-value {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  text-align: right;
+}
+
+.detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: opacity 0.15s ease;
+}
+.detail-link:hover {
+  opacity: 0.7;
 }
 
 svg text {
@@ -452,6 +580,9 @@ footer a:hover { text-decoration: underline; }
   .stats { margin-left: 0; }
   .search-input { width: 100%; }
   header { flex-direction: column; }
+  .chart-wrapper { flex-direction: column; }
+  .detail-panel.open { width: 100%; border-left: none; border-top: 1px solid var(--color-border); border-radius: 0 0 10px 10px; }
+  .chart-wrapper .chart-container:has(+ .detail-panel.open) { border-radius: 10px 10px 0 0; }
 }
 </style>
 </head>
@@ -505,8 +636,20 @@ footer a:hover { text-decoration: underline; }
     </div>
   </div>
 
-  <div class="chart-container" id="chart">
-    <div class="loading"><div class="loading-spinner"></div>Fetching models from OpenRouter...</div>
+  <div class="chart-wrapper">
+    <div class="chart-container" id="chart">
+      <div class="loading"><div class="loading-spinner"></div>Fetching models from OpenRouter...</div>
+    </div>
+    <div class="detail-panel" id="detail-panel">
+      <div class="detail-panel-header">
+        <div class="detail-model-name" id="detail-name"></div>
+        <button class="detail-panel-close" id="detail-close" aria-label="Close panel">&times;</button>
+      </div>
+      <div class="detail-model-id" id="detail-id"></div>
+      <div id="detail-body"></div>
+      <div style="flex:1"></div>
+      <a class="detail-link" id="detail-link" href="#" target="_blank" rel="noopener">View on OpenRouter &rarr;</a>
+    </div>
   </div>
   <div class="tooltip" id="tooltip"></div>
 </div>
@@ -608,11 +751,57 @@ footer a:hover { text-decoration: underline; }
   // Provider visibility: true = shown, false = hidden
   let providerVisibility = {};
   let providerCounts = {};
+  let selectedModel = null;   // currently selected model object (persists across renders)
 
   const chartEl = document.getElementById('chart');
   const tooltipEl = document.getElementById('tooltip');
   const statsEl = document.getElementById('stats');
   const badgesEl = document.getElementById('badges');
+  const detailPanel = document.getElementById('detail-panel');
+  const detailName = document.getElementById('detail-name');
+  const detailId = document.getElementById('detail-id');
+  const detailBody = document.getElementById('detail-body');
+  const detailLink = document.getElementById('detail-link');
+  const detailClose = document.getElementById('detail-close');
+
+  // --- Detail panel ---
+  function openDetail(model) {
+    selectedModel = model;
+    const color = getColor(model.provider);
+    detailName.textContent = model.name;
+    detailName.style.color = color;
+    detailId.textContent = model.id;
+
+    const costPerInput1k = model.inputCost / 1000;
+    const costPerOutput1k = model.outputCost / 1000;
+
+    detailBody.innerHTML = `
+      <div class="detail-section">
+        <div class="detail-section-title">Pricing</div>
+        <div class="detail-row"><span class="detail-row-label">Input</span><span class="detail-row-value">${formatCost(model.inputCost)} / 1M</span></div>
+        <div class="detail-row"><span class="detail-row-label">Output</span><span class="detail-row-value">${formatCost(model.outputCost)} / 1M</span></div>
+      </div>
+      <div class="detail-section">
+        <div class="detail-section-title">Model Info</div>
+        <div class="detail-row"><span class="detail-row-label">Provider</span><span class="detail-row-value" style="color:${color}">${model.provider}</span></div>
+        <div class="detail-row"><span class="detail-row-label">Context</span><span class="detail-row-value">${model.contextLength ? model.contextLength.toLocaleString() + ' tok' : '—'}</span></div>
+        <div class="detail-row"><span class="detail-row-label">Modality</span><span class="detail-row-value">${model.modality || '—'}</span></div>
+      </div>
+    `;
+    detailLink.href = 'https://openrouter.ai/' + model.id;
+    detailPanel.classList.add('open');
+    // Re-render chart so it resizes and shows selection ring
+    render();
+  }
+
+  function closeDetail() {
+    selectedModel = null;
+    detailPanel.classList.remove('open');
+    // Re-render after transition to reclaim space
+    setTimeout(render, 320);
+  }
+
+  detailClose.addEventListener('click', closeDetail);
 
   const inputMinSlider = document.getElementById('input-min');
   const inputMaxSlider = document.getElementById('input-max');
@@ -912,6 +1101,7 @@ footer a:hover { text-decoration: underline; }
       .attr('cx', d => xScale(d.inputCost))
       .attr('cy', d => yScale(d.outputCost))
       .attr('r', d => {
+        if (selectedModel && selectedModel.id === d.id) return 7;
         if (query && (d.id.toLowerCase().includes(query) || d.name.toLowerCase().includes(query))) return 5.5;
         return 4;
       })
@@ -919,13 +1109,24 @@ footer a:hover { text-decoration: underline; }
         if (query && (d.id.toLowerCase().includes(query) || d.name.toLowerCase().includes(query))) return getComputedStyle(root).getPropertyValue('--color-accent').trim();
         return getColor(d.provider);
       })
-      .attr('fill-opacity', 0.7)
+      .attr('fill-opacity', d => (selectedModel && selectedModel.id === d.id) ? 1 : 0.7)
       .attr('stroke', d => {
+        if (selectedModel && selectedModel.id === d.id) return getComputedStyle(root).getPropertyValue('--color-text').trim();
         if (query && (d.id.toLowerCase().includes(query) || d.name.toLowerCase().includes(query))) return getComputedStyle(root).getPropertyValue('--color-accent').trim();
         return getColor(d.provider);
       })
-      .attr('stroke-opacity', 0.25)
+      .attr('stroke-width', d => (selectedModel && selectedModel.id === d.id) ? 2.5 : 1)
+      .attr('stroke-opacity', d => (selectedModel && selectedModel.id === d.id) ? 1 : 0.25)
+      .on('click', function(event, d) {
+        event.stopPropagation();
+        if (selectedModel && selectedModel.id === d.id) {
+          closeDetail();
+        } else {
+          openDetail(d);
+        }
+      })
       .on('mouseenter', function(event, d) {
+        if (selectedModel && selectedModel.id === d.id) return; // don't enlarge already-selected
         d3.select(this).attr('r', 7).attr('fill-opacity', 1);
         const color = getColor(d.provider);
         tooltipEl.innerHTML = `
@@ -956,6 +1157,7 @@ footer a:hover { text-decoration: underline; }
         tooltipEl.style.top = top + 'px';
       })
       .on('mouseleave', function(event, d) {
+        if (selectedModel && selectedModel.id === d.id) return; // keep selected state
         const isHighlighted = query && (d.id.toLowerCase().includes(query) || d.name.toLowerCase().includes(query));
         d3.select(this).attr('r', isHighlighted ? 5.5 : 4).attr('fill-opacity', 0.7);
         tooltipEl.classList.remove('visible');
