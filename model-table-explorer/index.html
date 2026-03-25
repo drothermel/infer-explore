@@ -427,36 +427,66 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
   border-top: 1px solid var(--color-border);
 }
 
-/* Configurations section */
-.config-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+/* Configurations comparison table */
+.config-table-wrap {
+  overflow-x: auto;
+  margin-top: 4px;
 }
-.config-card {
+.config-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.config-table thead th {
+  position: sticky;
+  top: 0;
   background: var(--color-surface-3);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 10px 14px;
-  min-width: 220px;
-  flex: 1;
-  max-width: 360px;
-}
-.config-card.config-base {
-  border-color: var(--color-primary);
-  border-width: 1px;
-}
-.config-header {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 6px;
-}
-.config-label {
-  font-family: var(--font-body);
+  padding: 5px 8px;
+  text-align: left;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+  cursor: default;
+}
+.config-table thead th.bench-col {
+  text-align: right;
+  min-width: 54px;
+}
+.config-table tbody tr {
+  border-bottom: 1px solid var(--color-border);
+}
+.config-table tbody tr:last-child {
+  border-bottom: none;
+}
+.config-table tbody td {
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.config-table tbody td.config-name-cell {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 11px;
   color: var(--color-text);
+  white-space: normal;
+  min-width: 120px;
+  max-width: 200px;
+}
+.config-table tbody td.bench-val {
+  text-align: right;
+}
+.config-table tbody td.bench-best {
+  text-align: right;
+  color: var(--color-success);
+  font-weight: 600;
+}
+.config-table tbody td.bench-null {
+  text-align: right;
+  color: var(--color-text-dim);
+  font-style: italic;
 }
 .config-tag {
   display: inline-block;
@@ -466,20 +496,13 @@ td.bool-false { color: var(--color-text-dim); text-align: center; }
   font-weight: 600;
   font-family: var(--font-mono);
   letter-spacing: 0.3px;
+  vertical-align: middle;
+  margin-left: 3px;
 }
 .tag-reasoning { background: #a78bfa; color: #111; }
 .tag-non-reasoning { background: var(--color-text-dim); color: #111; }
 .tag-adaptive { background: var(--color-accent); color: #111; }
 .tag-effort { background: var(--color-primary); color: #111; }
-.config-benchmarks {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px 10px;
-  font-size: 11px;
-  margin-top: 4px;
-}
-.config-benchmarks .cb-label { color: var(--color-text-muted); font-size: 10px; }
-.config-benchmarks .cb-val { font-family: var(--font-mono); font-size: 10px; }
 
 /* Aliases list */
 .alias-list {
@@ -944,49 +967,90 @@ function renderDetail(m) {
   }
   html += '</div></div>';
 
-  // Configurations section
+  // Configurations comparison table
   const configs = m.configurations || [];
   if (configs.length > 1) {
+    // Collect the union of all benchmark keys across configs (preserving order)
+    const benchKeysSet = new Set();
+    const benchKeysOrdered = [];
+    for (const c of configs) {
+      for (const k of Object.keys(c.benchmarks || {})) {
+        if (!benchKeysSet.has(k)) {
+          const v = (c.benchmarks || {})[k];
+          if (v !== null && v !== undefined) {
+            benchKeysSet.add(k);
+            benchKeysOrdered.push(k);
+          }
+        }
+      }
+    }
+    // Also scan for keys that only appear with values in other configs
+    for (const c of configs) {
+      for (const k of Object.keys(c.benchmarks || {})) {
+        if (!benchKeysSet.has(k) && (c.benchmarks || {})[k] !== null && (c.benchmarks || {})[k] !== undefined) {
+          benchKeysSet.add(k);
+          benchKeysOrdered.push(k);
+        }
+      }
+    }
+
+    // Find the best (max) value for each benchmark column to highlight
+    const bestVals = {};
+    for (const bk of benchKeysOrdered) {
+      let best = -Infinity;
+      for (const c of configs) {
+        const v = (c.benchmarks || {})[bk];
+        if (v !== null && v !== undefined && typeof v === 'number') {
+          if (v > best) best = v;
+        }
+      }
+      if (best > -Infinity) bestVals[bk] = best;
+    }
+
     html += '<div class="detail-section" style="grid-column:1/-1"><h3>Configurations (' + configs.length + ')</h3>';
-    html += '<div class="config-cards">';
+    html += '<div class="config-table-wrap"><table class="config-table"><thead><tr>';
+    html += '<th>Configuration</th><th>Sources</th>';
+    for (const bk of benchKeysOrdered) {
+      const label = bk.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g, ch => ch.toUpperCase());
+      html += `<th class="bench-col">${esc(label)}</th>`;
+    }
+    html += '</tr></thead><tbody>';
+
     for (const c of configs) {
       const isBase = !c.reasoning_mode && !c.effort_level;
-      html += `<div class="config-card ${isBase ? 'config-base' : ''}">`;
-      html += '<div class="config-header">';
-      // Build label from config_id
+      html += '<tr>';
+      // Config name + tags
+      html += '<td class="config-name-cell">';
       const cLabel = isBase ? 'Base' : (c.config_id || '').split(':').slice(1).join(':') || 'Config';
-      html += `<span class="config-label">${esc(cLabel)}</span>`;
-      // Tags
+      html += esc(cLabel);
       if (c.reasoning_mode) {
         const tagCls = c.reasoning_mode === 'reasoning' ? 'tag-reasoning' :
                        c.reasoning_mode === 'adaptive' ? 'tag-adaptive' : 'tag-non-reasoning';
-        html += `<span class="config-tag ${tagCls}">${esc(c.reasoning_mode)}</span>`;
+        html += ` <span class="config-tag ${tagCls}">${esc(c.reasoning_mode)}</span>`;
       }
       if (c.effort_level) {
-        html += `<span class="config-tag tag-effort">${esc(c.effort_level)}</span>`;
+        html += ` <span class="config-tag tag-effort">${esc(c.effort_level)}</span>`;
       }
-      html += '</div>';
+      html += '</td>';
       // Source names
-      if (c.source_names?.length) {
-        html += '<div style="font-size:10px;color:var(--color-text-muted);margin-bottom:4px">';
-        html += c.source_names.map(n => esc(n)).join(', ');
-        html += '</div>';
-      }
-      // Config-level benchmarks
-      const cb = c.benchmarks || {};
-      const cbEntries = Object.entries(cb).filter(([k,v]) => v !== null && v !== undefined);
-      if (cbEntries.length > 0) {
-        html += '<div class="config-benchmarks">';
-        for (const [k, v] of cbEntries) {
-          const bLabel = k.replace(/^aa_/, 'AA ').replace(/_/g,' ').replace(/\b\w/g, ch=>ch.toUpperCase());
-          const bVal = typeof v === 'number' ? (v > 0 && v < 1 ? (v*100).toFixed(1)+'%' : Number(v).toFixed(1)) : v;
-          html += `<span class="cb-label">${esc(bLabel)}</span><span class="cb-val">${esc(String(bVal))}</span>`;
+      html += '<td style="font-size:10px;color:var(--color-text-muted);max-width:200px;white-space:normal">';
+      html += (c.source_names || []).map(n => esc(n)).join(', ');
+      html += '</td>';
+      // Benchmark values
+      for (const bk of benchKeysOrdered) {
+        const v = (c.benchmarks || {})[bk];
+        if (v === null || v === undefined) {
+          html += '<td class="bench-null">\u2014</td>';
+        } else {
+          const display = typeof v === 'number' ? (v > 0 && v < 1 ? (v*100).toFixed(1)+'%' : Number(v).toFixed(1)) : v;
+          const isBest = configs.length > 2 && bestVals[bk] !== undefined && v === bestVals[bk];
+          html += `<td class="${isBest ? 'bench-best' : 'bench-val'}">${esc(String(display))}</td>`;
         }
-        html += '</div>';
       }
-      html += '</div>';
+      html += '</tr>';
     }
-    html += '</div></div>';
+
+    html += '</tbody></table></div></div>';
   }
 
   // Benchmarks section (model-level aggregate)
