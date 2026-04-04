@@ -39,11 +39,36 @@ def fetch_hf() -> None:
         sys.exit(1)
 
 
+def fetch_bifrost() -> None:
+    """Fetch data from Bifrost."""
+    from infer_explore.sources.bifrost import fetch_and_save
+
+    try:
+        fetch_and_save()
+        print("\nDone!")
+    except Exception as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def merge_all() -> None:
+    """Merge all data sources into a unified dataset."""
+    from infer_explore.sources.merged import merge_and_save
+
+    try:
+        merge_and_save()
+        print("\nDone!")
+    except Exception as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
 def fetch_all() -> None:
     """Fetch data from all sources."""
     from infer_explore.sources.artificial_analysis import (
         fetch_and_save as aa_fetch,
     )
+    from infer_explore.sources.bifrost import fetch_and_save as bifrost_fetch
     from infer_explore.sources.huggingface import fetch_and_save as hf_fetch
     from infer_explore.sources.vantage import fetch_and_save as vantage_fetch
 
@@ -51,6 +76,7 @@ def fetch_all() -> None:
         ("Artificial Analysis", aa_fetch),
         ("Vantage", vantage_fetch),
         ("HuggingFace OpenEvals", hf_fetch),
+        ("Bifrost", bifrost_fetch),
     ]
 
     failed = []
